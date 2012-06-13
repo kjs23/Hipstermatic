@@ -10,64 +10,67 @@
 var hipstermatic = hipstermatic || {};
 
 hipstermatic = function() {
+	var
+		/* VARS */
+		vars = {
+			// image
+			imgObject: "",
+			// canvas properties
+			canvasSelector: "#myCanvas",
+			canvasContext: "",
+			canvasWidth: 0,
+			canvasHeight: 0
+		},
 
-	filterConfig = {
-		hudson: {
-			border: {
-				isRounded: true,
-				radius: 10,
-				width: 10,
-				color: "black"
+		/* FILTERS */
+		filterConfig = {
+			hudson: {
+				border: {
+					isRounded: true,
+					radius: 10,
+					width: 10,
+					color: "black"
+				},
+				vingette: {
+					shadowStrength: 0.5,
+					highlightStrength: 0.5
+				}
 			},
-			vingette: {
-				shadowStrength: 0.5,
-				highlightStrength: 0.5
+			inkwell: {
+				greyscale: true,
+				border: {
+					width: 20,
+					color: "white"
+				}
+				//gaussian: true
+			},
+			greyscale: {
+				greyscale: true
+			},
+			brightness: {
+				brightness: 50
 			}
 		},
-		inkwell: {
-			greyscale: true,
-			border: {
-				width: 20,
-				color: "white"
-			}
-			//gaussian: true
-		},
-		greyscale: {
-			greyscale: true
-		},
-		brightness: {
-			brightness: 50
-
-		}
-	};
-
-	/* VARS */
-	vars = {
-		canvasSelector: "#myCanvas",
-		imgObject: "",
-		canvasContext: ""
-	};
-
 
 		/* PRIVATE FUNCTIONS */
 		loadImageFromFile = function(e) {
-			var $canvas = $(this.vars.canvasSelector),
+			var $canvas = $(vars.canvasSelector),
 				$input = $('#input'),
-				img = this.vars.imgObject,
-				ctx = this.vars.canvasContext,
 				reader = new FileReader();
-				this.vars.imgObject = new Image();
-				this.vars.canvasContext = $canvas.get(0).getContext("2d"),
+				vars.imgObject = new Image();
+
+			// set he canvas context
+			vars.canvasContext = $canvas.get(0).getContext("2d"),
 
 			reader.onload = function(e) {
-				img.src = e.target.result;
-				img.onload = function() {
-					var imgWidth = img.width,
-						imgHeight = img.height,
-						imgScaleFactor, scaledImgWidth, scaledImgHeight;
+				vars.imgObject.src = e.target.result;
+				vars.imgObject.onload = function() {
+					var imgWidth = vars.imgObject.width,
+						imgHeight = vars.imgObject.height,
+						imgScaleFactor;
 
 					// clear current canvas content
-					ctx.clearRect(0, 0, $canvas.width(), $canvas.height());
+					vars.canvasContext.clearRect(0, 0, $canvas.width(), $canvas.height());
 
 					// scale the image down to a max 500x500
 					if (imgWidth > imgHeight) {
@@ -75,38 +78,39 @@ hipstermatic = function() {
 						imgScaleFactor = imgWidth / 500;
 
 						// set the new width and height
-						scaledImgWidth = 500;
-						scaledImgHeight = imgHeight / imgScaleFactor;
+						vars.canvasWidth = 500;
+						vars.canvasHeight = imgHeight / imgScaleFactor;
 					} else {
 						// calculate the scale factor
 						imgScaleFactor = imgHeight / 500;
 
 						// set the new width and height
-						scaledImgWidth = imgWidth / imgScaleFactor;
-						scaledImgHeight = 500;
+						vars.canvasWidth = imgWidth / imgScaleFactor;
+						vars.canvasHeight = 500;
 					}
 
 					// set canvas size based on image size
 					$canvas.attr({
-						width: scaledImgWidth,
-						height: scaledImgHeight
+						width: vars.canvasWidth,
+						height: vars.canvasHeight
 					});
 
 					// draw image on canvas
 					//ctx.drawImage([image], [top], [left], [width], [height]);
-					ctx.drawImage(img, 0, 0, scaledImgWidth, scaledImgHeight);
+					vars.canvasContext.drawImage(vars.imgObject, 0, 0, vars.canvasWidth, vars.canvasHeight);
 				};
 			};
 
 			reader.readAsDataURL(e.target.files[0]);
 		},
+
 		applyFilter = function(config) {
 		//console.log("applyFilter");
 		
 		//var canvas = imageHolder.children("canvas");
 		//console.log(config);
-		var canvas = $(this.vars.canvasSelector),
-		imageHolder = $(this.vars.imgObject),
+		var canvas = $(vars.canvasSelector),
+		imageHolder = $(vars.imgObject),
 		canvasWidth = canvas.width(),
 		canvasHeight = canvas.height(),
 		ctx = vars.canvasContext,
@@ -338,7 +342,7 @@ hipstermatic = function() {
 					//$(hipstermatic.vars.canvasSelector).trigger("revert");
 					//console.log($(e.target).data(''));
 
-					var type = $this.attr("data-type");//change this
+					var type = $this.attr("data-filter");
 					//filterLinks.removeClass("active");
 					$(this).addClass("active");
 					//console.log();
