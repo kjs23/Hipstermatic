@@ -32,17 +32,20 @@
 		<section id="sidebar">
 			<h2>Filters</h2>
 			<ul class="filters">
-				<li><a href="#" data-filter="blur">Filter 1</a></li>
-				<li><a href="#">Filter 2</a></li>
-				<li><a href="#">Filter 3</a></li>
-				<li><a href="#">Filter 4</a></li>
-				<li><a href="#">Filter 5</a></li>
-				<li><a href="#">Filter 6</a></li>
-				<li><a href="#">Filter 7</a></li>
-				<li><a href="#">Filter 8</a></li>
-				<li><a href="#">Filter 9</a></li>
-				<li><a href="#">Filter 10</a></li>
+				<li><a href="#" data-type="greyscale">GreyScale</a></li>
+				<li><a href="#" data-type="hudson">Hudson</a></li>
+				<li><a href="#" data-type="inkwell">Inkwell</a></li>
+			    <li><a href="#" data-type="brightness">Brightness/Contrast</a></li>			
 			</ul>
+			<div class="controls">
+      <label for="brightness">Adjust Brightness or contrast</label><input type="range" value="0" id="brightness" min="-500" step="1" max="500"/>
+      <div class="channelAdjustment">
+       <label for="redAdjustment">Adjust Red Channel</label><input type="range" value="0" id="redAdjustment" min="-500" step="10" max="500" />
+        <label for="blueAdjustment">Adjust Blue Channel</label><input type="range" value="0" id="blueAdjustment" min="-500" step="10" max="500" />
+         <label for="greenAdjustment">Adjust Green Channel</label><input type="range" value="0" id="greenAdjustment" min="-500" step="10" max="500" />
+         </div>
+    </div>
+    <a href="#" class="revert">Revert to original</a>
 		</section>
 	</div>
 
