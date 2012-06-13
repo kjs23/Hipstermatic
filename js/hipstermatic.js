@@ -112,7 +112,7 @@ hipstermatic = function() {
 		ctx = vars.canvasContext,
 		imgPixels = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
 
-		console.log(ctx);
+		
 
 		if (config.vingette) {
 
@@ -328,7 +328,7 @@ hipstermatic = function() {
 
 			// bind filter clicks
 			$('.filters').on('click', 'a', function(e) {
-				e.preventDefault();
+				
 
 				// call function to apply the filter
 				//filters[$(e.target).data('filter')]();
@@ -336,8 +336,8 @@ hipstermatic = function() {
 				var $this = $(this);
 				if (!$this.hasClass("active") && vars.canvasContext !== ""){
 					//$(hipstermatic.vars.canvasSelector).trigger("revert");
-					//console.log($(e.target).data(''));
 
+					canvas.trigger("revert");
 					var type = $this.attr("data-type");//change this
 					//filterLinks.removeClass("active");
 					$(this).addClass("active");
@@ -359,12 +359,12 @@ hipstermatic = function() {
 		});
 		$("#brightness").bind("change", function(){
 			//console.log($(this).attr("value"));
-			$(canvas).trigger("revert");
+			canvas.trigger("revert");
 			applyFilter({brightness: parseInt($(this).attr("value"), 10)});
 		});
 		$(".channelAdjustment input").bind("change", function(){
 			//console.log($(this).attr("value"));
-			$(canvas).trigger("revert");
+			canvas.trigger("revert");
 			
 			var t = {};
 		
@@ -378,14 +378,17 @@ hipstermatic = function() {
 		});
 		$(".revert").bind("click", function(){
 			if (!e.keyCode || e.keyCode === "13"){
-				$(canvas).trigger("revert");
+				canvas.trigger("revert");
 				return false;
 			}
 		});
-		$(canvas).bind("revert", function(){
+		canvas.bind("revert", function(){
 			//puts back to original image
-			console.log(vars.imgObject);
-			vars.canvasContext.drawImage(vars.imgObject, 0, 0);
+			
+			//console.log(vars.canvasContext);
+			
+			//console.log(vars.imgObject);
+			ctx.drawImage(vars.imgObject, 0, 0);
 			
 			//filterLinks.removeClass("active");
 		});
