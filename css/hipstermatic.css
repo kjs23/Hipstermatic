@@ -71,7 +71,9 @@ a {
 	text-decoration: none;
 }
 a:hover,
-a:focus {
+a:focus,
+a:active,
+.active {
 	color: #333;
 }
 
