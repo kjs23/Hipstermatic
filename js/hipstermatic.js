@@ -9,9 +9,10 @@
 
 var hipstermatic = hipstermatic || {};
 
-hipstermatic = function () {
+hipstermatic = function() {
 	/* VARS */
 	var
+
 		/* PRIVATE FUNCTIONS */
 		loadImageFromFile = function(e) {
 			var $canvas = $("#myCanvas"),
@@ -25,9 +26,7 @@ hipstermatic = function () {
 				img.onload = function() {
 					var imgWidth = img.width,
 						imgHeight = img.height,
-						imgScaleFactor,
-						scaledImgWidth,
-						scaledImgHeight;
+						imgScaleFactor, scaledImgWidth, scaledImgHeight;
 
 					// clear current canvas content
 					ctx.clearRect(0, 0, $canvas.width(), $canvas.height());
