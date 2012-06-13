@@ -80,13 +80,13 @@ hipstermatic = function() {
 
 						// set the new width and height
 						vars.canvasWidth = 500;
-						vars.canvasHeight = imgHeight / imgScaleFactor;
+						vars.canvasHeight = parseInt(imgHeight / imgScaleFactor,10); //parseInt to stop odd numbers in chrome
 					} else {
 						// calculate the scale factor
 						imgScaleFactor = imgHeight / 500;
 
 						// set the new width and height
-						vars.canvasWidth = imgWidth / imgScaleFactor;
+						vars.canvasWidth = parseInt(imgWidth / imgScaleFactor,10); //parseInt to stop odd numbers in chrome
 						vars.canvasHeight = 500;
 					}
 
@@ -106,17 +106,15 @@ hipstermatic = function() {
 		},
 
 		applyFilter = function(config) {
-		//console.log("applyFilter");
 		
-		//var canvas = imageHolder.children("canvas");
-		//console.log(config);
-		var canvas = $(vars.canvasSelector),
-		imageHolder = $(vars.imgObject),
-		canvasWidth = canvas.width(),
-		canvasHeight = canvas.height(),
+		var canvas = vars.canvasSelector,
+		imageHolder = vars.imgObject,
+		canvasWidth = vars.canvasWidth,
+		canvasHeight = vars.canvasHeight,
 		ctx = vars.canvasContext,
-		imgPixels = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
-
+		imgPixels = ctx.getImageData(0, 0, canvasWidth, canvasHeight),
+		imgPixelsHeight = imgPixels.height,
+		imgPixelsWidth = imgPixels.width;
 		
 
 		if (config.vingette) {
@@ -146,9 +144,9 @@ hipstermatic = function() {
 				
 			//merge pixel tweaking somehow - only want one set of these loops - too dangerous doing these all at once
 			//try negatives to make darker?
-			for (var y = 0; y < imgPixels.height; y++) {
-				for (var x = 0; x < imgPixels.width; x++) {
-					var i = (y * 4) * imgPixels.width + x * 4;
+			for (var y = 0; y < imgPixelsHeight; y++) {
+				for (var x = 0; x < imgPixelsWidth; x++) {
+					var i = (y * 4) * imgPixelsWidth + x * 4;
 					//var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
 
 					
@@ -157,13 +155,13 @@ hipstermatic = function() {
 					/*blue*/imgPixels.data[i + 2] += config.brightness;
 				}
 			}
-			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height); // add only one placement for all pixelTweaking
+			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixelsWidth, imgPixelsHeight); // add only one placement for all pixelTweaking
 		}
 		if (config.greyscale) {
 			//greyscale
-			for (var y = 0; y < imgPixels.height; y++) {
-				for (var x = 0; x < imgPixels.width; x++) {
-					var i = (y * 4) * imgPixels.width + x * 4;
+			for (var y = 0; y < imgPixelsHeight; y++) {
+				for (var x = 0; x < imgPixelsWidth; x++) {
+					var i = (y * 4) * imgPixelsWidth + x * 4;
 					var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
 
 					
@@ -172,14 +170,14 @@ hipstermatic = function() {
 					/*blue*/imgPixels.data[i + 2] = avg;
 				}
 			}
-			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
+			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixelsWidth, imgPixelsHeight);
 		}
 		if (config.redAdjustment || config.greenAdjustment || config.blueAdjustment)
 		{
-			for (var y = 0; y < imgPixels.height; y++) {
-				for (var x = 0; x < imgPixels.width; x++) {
+			for (var y = 0; y < imgPixelsHeight; y++) {
+				for (var x = 0; x < imgPixelsWidth; x++) {
 					
-					var i = (y * 4) * imgPixels.width + x * 4;
+					var i = (y * 4) * imgPixelsWidth + x * 4;
 					
 					
 					/*red*/imgPixels.data[i] +=config.redAdjustment;
@@ -187,7 +185,7 @@ hipstermatic = function() {
 					/*blue*/imgPixels.data[i + 2] +=config.blueAdjustment;
 				}
 			}
-			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
+			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixelsWidth, imgPixelsHeight);
 		}
 		if (config.gaussian) {
 			function Matrix(){
@@ -204,9 +202,9 @@ hipstermatic = function() {
 			var sumA = 0;
 			var gausFact = Array(1,6,15,20,15,6,1);
 			var gausSum = 64;
-			for (var y = 0; y < imgPixels.height; y++) {
-				for (var x = 0; x < imgPixels.width; x++) {
-				var i = (y * 4) * imgPixels.width + x * 4;
+			for (var y = 0; y < imgPixelsHeight; y++) {
+				for (var x = 0; x < imgPixelsWidth; x++) {
+				var i = (y * 4) * imgPixelsWidth + x * 4;
 				var sumR = 0;
 				var sumG = 0;
 				var sumB = 0;
@@ -250,7 +248,7 @@ hipstermatic = function() {
 					/*console.log("x" + xCoord);
 					console.log("y" + yCoord);*/
 
-					ctx.putImageData(iData, xCoord, yCoord, 0, 0, imgPixels.width, imgPixels.height);
+					ctx.putImageData(iData, xCoord, yCoord, 0, 0, imgPixelsWidth, imgPixelsHeight);
 
 				}
 				
@@ -270,36 +268,36 @@ hipstermatic = function() {
 
 		}
 		if (config.border){
+			var borderWidth = config.border.width,
+			borderColor = config.border.color;
 			if (config.border.isRounded){
 				//rounded corners
 				//cornerRadius = { upperLeft: cornerRadius, upperRight: cornerRadius, lowerLeft: cornerRadius, lowerRight: cornerRadius },
-				var canvasX = config.border.width,
-				canvasY = config.border.width,
-				newRectWidth = canvasWidth - (config.border.width*2),
-				newRectHeight = canvasHeight - (config.border.width*2);
-				
-
+				var radius = config.border.radius,
+				newRectWidth = borderWidth + (canvasWidth - (borderWidth*2)),
+				newRectHeight = borderWidth + (canvasHeight - (borderWidth*2));
+				//composite operation to clip corners
 				ctx.globalCompositeOperation = "destination-in";
 				ctx.save();
 				ctx.beginPath();
-				ctx.lineWidth = config.border.width;
+				ctx.lineWidth = borderWidth;
 				//draw rounded rectangle
 				ctx.beginPath();
-				ctx.moveTo(canvasX + config.border.radius, canvasY);
-				ctx.lineTo(canvasX + newRectWidth - config.border.radius, canvasY);
-				ctx.quadraticCurveTo(canvasX + newRectWidth, canvasY, canvasX + newRectWidth, canvasY + config.border.radius);
-				ctx.lineTo(canvasX + newRectWidth, canvasY + newRectHeight - config.border.radius);
-				ctx.quadraticCurveTo(canvasX + newRectWidth, canvasY + newRectHeight, canvasX + newRectWidth - config.border.radius, canvasY + newRectHeight);
-				ctx.lineTo(canvasX + config.border.radius, canvasY + newRectHeight);
-				ctx.quadraticCurveTo(canvasX, canvasY + newRectHeight, canvasX, canvasY + newRectHeight - config.border.radius);
-				ctx.lineTo(canvasX, canvasY + config.border.radius);
-				ctx.quadraticCurveTo(canvasX, canvasY, canvasX + config.border.radius, canvasY);
+				ctx.moveTo(borderWidth + radius, borderWidth);
+				ctx.lineTo(newRectWidth - radius, borderWidth);
+				ctx.quadraticCurveTo(newRectWidth, borderWidth, newRectWidth, borderWidth + radius);
+				ctx.lineTo(newRectWidth, newRectHeight - radius);
+				ctx.quadraticCurveTo(newRectWidth, newRectHeight, newRectWidth - radius, newRectHeight);
+				ctx.lineTo(borderWidth + radius, newRectHeight);
+				ctx.quadraticCurveTo(borderWidth, newRectHeight, borderWidth, newRectHeight - radius);
+				ctx.lineTo(borderWidth, borderWidth + radius);
+				ctx.quadraticCurveTo(borderWidth, borderWidth, borderWidth + radius, borderWidth);
 
 				ctx.closePath();
 			    ctx.fill();
 			    //set background colour based on color supplied 
 				ctx.globalCompositeOperation = "destination-over";
-				ctx.fillStyle = config.border.color;
+				ctx.fillStyle = borderColor;
 				ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 				ctx.globalCompositeOperation = "source-over"; //setting back to default
 			}
@@ -308,8 +306,8 @@ hipstermatic = function() {
 				//standard corners
 				ctx.beginPath();
 				ctx.rect(0, 0, canvasWidth, canvasHeight);
-				ctx.lineWidth = config.border.width;
-				ctx.strokeStyle = config.border.color;
+				ctx.lineWidth = borderWidth;
+				ctx.strokeStyle = borderColor;
 				ctx.stroke();
 			}
 			
@@ -377,15 +375,14 @@ hipstermatic = function() {
 			
 			var t = {};
 		
-			$(".channelAdjustment input").each(function(){
 				var value = parseInt($(this).attr("value"), 10);
 				var id = $(this).attr("id").toString();
 				t[id] = value;
-			});
+		
 			//console.log(t);
 			applyFilter(t);
 		});
-		$(".revert").bind("click", function(){
+		$(".revert").bind("click", function(e){
 			if (!e.keyCode || e.keyCode === "13"){
 				canvas.trigger("revert");
 				return false;
