@@ -19,7 +19,8 @@ hipstermatic = function() {
 			canvasSelector: "#myCanvas",
 			canvasContext: "",
 			canvasWidth: 0,
-			canvasHeight: 0
+			canvasHeight: 0,
+			filterSelector: ".filters"
 		},
 
 		/* FILTERS */
@@ -324,14 +325,15 @@ hipstermatic = function() {
 	return {
 		init: function() {
 			var $input = $('#input'),
-			canvas = $(vars.canvasSelector);
+			canvas = $(vars.canvasSelector),
+			filters = $(vars.filterSelector);
 			// bind file input
 			$input.bind('change', function(e) {
 				loadImageFromFile(e);
 			});
 
 			// bind filter clicks
-			$('.filters').on('click', 'a', function(e) {
+			filters.on('click', 'a', function(e) {
 				
 
 				// call function to apply the filter
@@ -391,13 +393,9 @@ hipstermatic = function() {
 		});
 		canvas.bind("revert", function(){
 			//puts back to original image
+			vars.canvasContext.drawImage(vars.imgObject, 0, 0);
+			filters.find("a").removeClass("active");
 			
-			//console.log(vars.canvasContext);
-			
-			//console.log(vars.imgObject);
-			ctx.drawImage(vars.imgObject, 0, 0);
-			
-			//filterLinks.removeClass("active");
 		});
 		}
 	};
