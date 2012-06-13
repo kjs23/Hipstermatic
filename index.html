@@ -1,18 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8" />
+	<title>Hipstermatic</title>
 
-<title>Hipstermatic</title>
+	<link href="css/reset.css" rel="stylesheet">
+	<link href="css/hipstermatic.css" rel="stylesheet">
 
-<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/hipstermatic.js"></script>
-<link href="css/hipstermatic.css" media="screen" rel="stylesheet">
-
+	<!--[if lt IE 9]>
+		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
 </head>
 
 <body>
-	<canvas id="myCanvas" width="500" height="500"></canvas>
-	<input type="file" id="input"/>
-</body>
+	<div id="pageWrapper">
+		<header id="header">
+			<hgroup>
+				<h1>Hipstermatic</h1>
+				<h2>Fancy photo filter stuff for you folks that are too trendy</h2>
+			</hgroup>
+		</header>
 
+		<section id="content">
+			<canvas id="myCanvas" width="500" height="500"></canvas>
+
+			<form action="#" method="post">
+				<label for="input">Select your image:</label>
+				<input id="input" name="input" type="file" />
+			</form>
+		</section>
+		<section id="sidebar">
+			<h2>Filters</h2>
+			<ul class="filters">
+				<li><a href="#" data-filter="blur">Filter 1</a></li>
+				<li><a href="#">Filter 2</a></li>
+				<li><a href="#">Filter 3</a></li>
+				<li><a href="#">Filter 4</a></li>
+				<li><a href="#">Filter 5</a></li>
+				<li><a href="#">Filter 6</a></li>
+				<li><a href="#">Filter 7</a></li>
+				<li><a href="#">Filter 8</a></li>
+				<li><a href="#">Filter 9</a></li>
+				<li><a href="#">Filter 10</a></li>
+			</ul>
+		</section>
+	</div>
+
+	<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="js/hipstermatic.js"></script>
+</body>
 </html> 
