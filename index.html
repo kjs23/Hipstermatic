@@ -29,31 +29,31 @@
 				<input id="input" name="input" type="file" />
 			</form>
 		</section>
+
 		<section id="sidebar">
 			<h2>Filters</h2>
+
 			<ul class="filters">
+				<li><a href="#" class="revert">Original</a></li>
 				<li><a href="#" data-filter="greyscale">GreyScale</a></li>
 				<li><a href="#" data-filter="hudson">Hudson</a></li>
 				<li><a href="#" data-filter="inkwell">Inkwell</a></li>
-
 			    <li><a href="#" data-filter="brightness">Brightness/Contrast</a></li>			
 			</ul>
+
 			<div class="controls">
-				<label for="brightness">Adjust Brightness or contrast</label><input type="range" value="0" id="brightness" min="-500" step="1" max="500"/>
+				<label for="brightness">Adjust Brightness</label><input type="range" value="0" id="brightness" min="-255" step="1" max="255"/>
 				<div class="channelAdjustment">
 					<label for="redAdjustment">Adjust Red Channel</label><input type="range" value="0" id="redAdjustment" min="-500" step="10" max="500" />
 					<label for="blueAdjustment">Adjust Blue Channel</label><input type="range" value="0" id="blueAdjustment" min="-500" step="10" max="500" />
 					<label for="greenAdjustment">Adjust Green Channel</label><input type="range" value="0" id="greenAdjustment" min="-500" step="10" max="500" />
 				</div>
 			</div>
-			<a href="#" class="revert">Revert to original</a>
 		</section>
 	</div>
 
-	<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-
-	<script type="text/javascript" src="js/hipstermatic.js"></script>
-	<script type="text/javascript" src="js/filters.js"></script>
-
+	<script src="js/jquery-1.7.1.min.js"></script>
+	<script src="js/filters.js"></script>
+	<script src="js/hipstermatic.js"></script>
 </body>
 </html> 

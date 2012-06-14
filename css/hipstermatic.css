@@ -115,11 +115,6 @@ canvas {
 	margin: 10px 30px 30px;
 	border: 1px solid #ccc;
 	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
-	/*-moz-transform: rotate(-2deg);
-	-ms-transform: rotate(-2deg);
-	-o-transform: rotate(-2deg);
-	-webkit-transform: rotate(-2deg);
-	transform: rotate(-2deg);*/
 }
 
 .filters {}

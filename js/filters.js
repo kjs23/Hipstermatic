@@ -1,47 +1,46 @@
 var hipstermatic = hipstermatic || {};
+
 hipstermatic.filter = {
 	config: {
-			hudson: {
-				border: {
-					isRounded: true,
-					radius: 10,
-					width: 10,
-					color: "black"
-				},
-				vingette: {
-					shadowStrength: 0.5,
-					highlightStrength: 0.5
-				}
+		hudson: {
+			border: {
+				isRounded: true,
+				radius: 10,
+				width: 10,
+				color: "black"
 			},
-			inkwell: {
-				greyscale: true,
-				border: {
-					width: 20,
-					color: "white"
-				}
-				//gaussian: true
-			},
-			greyscale: {
-				greyscale: true
-			},
-			brightness: {
-				brightness: 50
+			vingette: {
+				shadowStrength: 0.5,
+				highlightStrength: 0.5
 			}
 		},
+		inkwell: {
+			greyscale: true,
+			border: {
+				width: 20,
+				color: "white"
+			}
+			//gaussian: true
+		},
+		greyscale: {
+			greyscale: true
+		},
+		brightness: {
+			brightness: 50
+		}
+	},
+
 	apply:function(config) {
-		
 		var canvas = hipstermatic.vars.canvasSelector,
-		imageHolder = hipstermatic.vars.imgObject,
-		canvasWidth = hipstermatic.vars.canvasWidth,
-		canvasHeight = hipstermatic.vars.canvasHeight,
-		ctx = hipstermatic.vars.canvasContext,
-		imgPixels = ctx.getImageData(0, 0, canvasWidth, canvasHeight),
-		imgPixelsHeight = imgPixels.height,
-		imgPixelsWidth = imgPixels.width;
-		
+			imageHolder = hipstermatic.vars.imgObject,
+			canvasWidth = hipstermatic.vars.canvasWidth,
+			canvasHeight = hipstermatic.vars.canvasHeight,
+			ctx = hipstermatic.vars.canvasContext,
+			imgPixels = ctx.getImageData(0, 0, canvasWidth, canvasHeight),
+			imgPixelsHeight = imgPixels.height,
+			imgPixelsWidth = imgPixels.width;
 
 		if (config.vingette) {
-
 			//console.log(config.vingette);
 			var outerRadius = Math.sqrt( Math.pow(canvasWidth/2, 2) + Math.pow(canvasHeight/2, 2) );
             ctx.globalCompositeOperation = 'source-over';
@@ -97,8 +96,7 @@ hipstermatic.filter = {
 			}
 			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height); // add only one placement for all pixelTweaking
 		}*/
-		if (config.brightness){
-				
+		if (config.brightness) {
 			//try negatives to make darker?
 			for (var y = 0; y < imgPixelsHeight; y++) {
 				for (var x = 0; x < imgPixelsWidth; x++) {
@@ -120,7 +118,6 @@ hipstermatic.filter = {
 					var i = (y * 4) * imgPixelsWidth + x * 4;
 					var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
 
-					
 					imgPixels.data[i] = avg;
 					imgPixels.data[i + 1] = avg;
 					imgPixels.data[i + 2] = avg;
@@ -128,14 +125,11 @@ hipstermatic.filter = {
 			}
 			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixelsWidth, imgPixelsHeight);
 		}
-		if (config.redAdjustment || config.greenAdjustment || config.blueAdjustment)
-		{
+		if (config.redAdjustment || config.greenAdjustment || config.blueAdjustment) {
 			for (var y = 0; y < imgPixelsHeight; y++) {
 				for (var x = 0; x < imgPixelsWidth; x++) {
-					
 					var i = (y * 4) * imgPixelsWidth + x * 4;
-					
-					
+
 					imgPixels.data[i] +=config.redAdjustment;
 					imgPixels.data[i + 1] +=config.greenAdjustment;
 					imgPixels.data[i + 2] +=config.blueAdjustment;
@@ -143,6 +137,7 @@ hipstermatic.filter = {
 			}
 			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixelsWidth, imgPixelsHeight);
 		}
+
 		/*if (config.gaussian) {
 			function Matrix(){
 				this.rows = [];
@@ -165,19 +160,18 @@ hipstermatic.filter = {
 				var sumG = 0;
 				var sumB = 0;
 				var sumA = 0;
-				var m = new Matrix(); 
+				var m = new Matrix();
 				for (var k=0; k<blurRadius; k++) {
 
 					color = ctx.getImageData(parseInt(y+k), x, 1, 1);
 					
 					m.rows[k] = new Array(parseInt(y+k), x);
 
-					 var r = color.data[0]; //perhaps merge these if not using elsewhere
-					 var g = color.data[1];
-					 var b = color.data[2];
-					 var a = color.data[3];
-					  
-					
+					var r = color.data[0]; //perhaps merge these if not using elsewhere
+					var g = color.data[1];
+					var b = color.data[2];
+					var a = color.data[3];
+
 					sumR += r*gausFact[k];
 					sumG += g*gausFact[k];
 					sumB += b*gausFact[k];
@@ -189,7 +183,7 @@ hipstermatic.filter = {
 					
 
 				}
-				//console.log(m);	
+				//console.log(m);
 				//console.log(m.rows.length);
 			
 				for (var u=0; u<m.rows.length; u++){
@@ -207,22 +201,10 @@ hipstermatic.filter = {
 					ctx.putImageData(iData, xCoord, yCoord, 0, 0, imgPixelsWidth, imgPixelsHeight);
 
 				}
-				
-			
-				
-
-					
-
-				
 			}
 		}
-		
-	
-			
-			
-		
-
 		}*/
+
 		if (config.border){
 			var borderWidth = config.border.width,
 			borderColor = config.border.color;
@@ -250,8 +232,8 @@ hipstermatic.filter = {
 				ctx.quadraticCurveTo(borderWidth, borderWidth, borderWidth + radius, borderWidth);
 
 				ctx.closePath();
-			    ctx.fill();
-			    //set background colour based on color supplied 
+				ctx.fill();
+				//set background colour based on color supplied
 				ctx.globalCompositeOperation = "destination-over";
 				ctx.fillStyle = borderColor;
 				ctx.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -269,84 +251,82 @@ hipstermatic.filter = {
 			
 		}	//canvas.toDataURL(); not sure where to put this yet but seems useful
 
-		},
-		setPixel:function(imageData, index, r, g, b, a){
+	},
+	setPixel:function(imageData, index, r, g, b, a){
+	
+		//set pixel to set colour
+		imageData[index] += r;
+		imageData[index + 1] += g;
+		imageData[index + 2] += b;
+		imageData[index + 3] += a;
 		
-			//set pixel to set colour
-			imageData[index] += r;
-			imageData[index + 1] += g;
-			imageData[index + 2] += b;
-			imageData[index + 3] += a;
-			
-		},
-		bindEvents:function(){
-			var canvas = $(hipstermatic.vars.canvasSelector);
-			$(hipstermatic.vars.filterSelector).find("a").bind("click keydown", function(e) {
-				// call function to apply the filter
-				if (!e.keyCode || e.keyCode === "13"){
-					var $this = $(this),
-					type = $this.attr("data-filter");
-					if ($this.hasClass("active") || hipstermatic.vars.canvasContext === ""){
-					
-						alert("upload a picture first");
+	},
+	bindEvents:function(){
+		var canvas = $(hipstermatic.vars.canvasSelector);
+		$(hipstermatic.vars.filterSelector).find("a").bind("click keydown", function(e) {
+			// call function to apply the filter
+			if (!e.keyCode || e.keyCode === "13"){
+				var $this = $(this),
+				type = $this.attr("data-filter");
+				if ($this.hasClass("active") || hipstermatic.vars.canvasContext === ""){
+				
+					alert("upload a picture first");
 
+					
+				}
+				else {
+					
+					$(hipstermatic.vars.canvasSelector).trigger("revert");
+
+				
+					$this.addClass("active");
+					
+					if (hipstermatic.filter.config[type]) {
+						var canvasUrl = hipstermatic.filter.apply(hipstermatic.filter.config[type]);
 						
 					}
 					else {
 						
-						$(hipstermatic.vars.canvasSelector).trigger("revert");
-
-					
-						$this.addClass("active");
-						
-						if (hipstermatic.filter.config[type]) {
-							var canvasUrl = hipstermatic.filter.apply(hipstermatic.filter.config[type]);
-							
-						}
-						else {
-							
-						}
 					}
-					return false;
 				}
+				return false;
+			}
 
-			});
-			$("#brightness").bind("change", function(){
-				//console.log($(this).attr("value"));
-				canvas.trigger("revert");
-				hipstermatic.filter.apply({brightness: parseInt($(this).attr("value"), 10)});
-			});
-			$(".channelAdjustment input").bind("change", function(){
-				//console.log($(this).attr("value"));
-				canvas.trigger("revert");
-				
-				var t = {};
+		});
+		$("#brightness").bind("change", function(){
+			//console.log($(this).attr("value"));
+			canvas.trigger("revert");
+			hipstermatic.filter.apply({brightness: parseInt($(this).attr("value"), 10)});
+		});
+		$(".channelAdjustment input").bind("change", function(){
+			//console.log($(this).attr("value"));
+			canvas.trigger("revert");
 			
-					var value = parseInt($(this).attr("value"), 10);
-					var id = $(this).attr("id").toString();
-					t[id] = value;
-			
-				//console.log(t);
-				hipstermatic.filters.apply(t);
-			});
-			$(".revert").bind("click", function(e){
-				if (!e.keyCode || e.keyCode === "13"){
-					canvas.trigger("revert");
-					return false;
-				}
-			});
-			canvas.bind("revert", function(){
-				//puts back to original image
-				hipstermatic.vars.canvasContext.drawImage(hipstermatic.vars.imgObject, 0, 0);
-				$(hipstermatic.vars.filterSelector).find("a").removeClass("active");
-				
-			});
-
-		},
+			var t = {};
 		
-		init: function(){
-			this.bindEvents();
-		}
+				var value = parseInt($(this).attr("value"), 10);
+				var id = $(this).attr("id").toString();
+				t[id] = value;
+		
+			//console.log(t);
+			hipstermatic.filters.apply(t);
+		});
+		$(".revert").bind("click", function(e){
+			if (!e.keyCode || e.keyCode === "13"){
+				canvas.trigger("revert");
+				return false;
+			}
+		});
+		canvas.bind("revert", function(){
+			//puts back to original image
+			hipstermatic.vars.canvasContext.drawImage(hipstermatic.vars.imgObject, 0, 0, hipstermatic.vars.canvasWidth, hipstermatic.vars.canvasHeight);
+			$(hipstermatic.vars.filterSelector).find("a").removeClass("active");
+		});
+	},
+		
+	init: function(){
+		this.bindEvents();
+	}
 };
 
 $(function() {
