@@ -91,17 +91,19 @@ a:active,
 	padding: 10px;
 }
 #content {
+	width: 600px;
 	float: left;
 }
 #sidebar {
 	float: left;
+	width: 360px;
 }
 
 /**
 * Header
 **/
 #header {
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 }
 #header h2 {
 	margin-left: 50px;
@@ -112,7 +114,7 @@ a:active,
 * Content
 **/
 canvas {
-	margin: 10px 30px 30px;
+	margin: 0 40px 30px;
 	border: 1px solid #ccc;
 	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }

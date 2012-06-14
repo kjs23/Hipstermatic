@@ -309,7 +309,7 @@ hipstermatic.filter = {
 				t[id] = value;
 		
 			//console.log(t);
-			hipstermatic.filters.apply(t);
+			hipstermatic.filter.apply(t);
 		});
 		$(".revert").bind("click", function(e){
 			if (!e.keyCode || e.keyCode === "13"){

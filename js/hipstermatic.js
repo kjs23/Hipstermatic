@@ -7,7 +7,7 @@
 * @license	GPL v3
 **/
 
-//var hipstermatic = hipstermatic || {};
+var hipstermatic = hipstermatic || {};
 
 /* this.vars */
 hipstermatic.vars = {
@@ -22,13 +22,13 @@ hipstermatic.vars = {
 };
 
 hipstermatic.loadImageFromFile = function(e) {
-	var $canvas = $(this.vars.canvasSelector),
+	var $canvas = $(hipstermatic.vars.canvasSelector),
 		$input = $('#input'),
 		reader = new FileReader();
-		this.vars.imgObject = new Image();
+		hipstermatic.vars.imgObject = new Image();
 
 	// set he canvas context
-	this.vars.canvasContext = $canvas.get(0).getContext("2d"),
+	hipstermatic.vars.canvasContext = $canvas.get(0).getContext("2d"),
 
 	reader.onload = function(e) {
 		hipstermatic.vars.imgObject.src = e.target.result;
@@ -64,8 +64,10 @@ hipstermatic.loadImageFromFile = function(e) {
 			});
 
 			// draw image on canvas
-			//ctx.drawImage([image], [top], [left], [width], [height]);
+			// ctx.drawImage([image], [top], [left], [width], [height]);
 			hipstermatic.vars.canvasContext.drawImage(hipstermatic.vars.imgObject, 0, 0, hipstermatic.vars.canvasWidth, hipstermatic.vars.canvasHeight);
+
+			$('.filters').slideDown(1000);
 		};
 	};
 
@@ -83,6 +85,9 @@ hipstermatic.init = function() {
 	$input.bind('change', function(e) {
 		hipstermatic.loadImageFromFile(e);
 	});
+
+	// roll up the filters
+	$('.filters').slideUp(0);
 };
 		
 $(function() {

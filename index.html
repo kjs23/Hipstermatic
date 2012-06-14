@@ -39,16 +39,18 @@
 				<li><a href="#" data-filter="hudson">Hudson</a></li>
 				<li><a href="#" data-filter="inkwell">Inkwell</a></li>
 			    <li><a href="#" data-filter="brightness">Brightness/Contrast</a></li>			
+			    <li>
+			    	<div class="controls">
+						<p><label for="brightness">Brightness</label><input type="range" value="0" id="brightness" min="-255" step="1" max="255" /><p>
+						<div class="channelAdjustment">
+							<h3>Channel adjustment</h3>
+							<p><label for="redAdjustment">Red</label><input type="range" value="0" id="redAdjustment" min="-225" step="1" max="255" /><p>
+							<p><label for="blueAdjustment">Blue</label><input type="range" value="0" id="blueAdjustment" min="-225" step="1" max="255" /><p>
+							<p><label for="greenAdjustment">Green</label><input type="range" value="0" id="greenAdjustment" min="-225" step="1" max="255" /><p>
+						</div>
+					</div>
+				</lI>
 			</ul>
-
-			<div class="controls">
-				<label for="brightness">Adjust Brightness</label><input type="range" value="0" id="brightness" min="-255" step="1" max="255"/>
-				<div class="channelAdjustment">
-					<label for="redAdjustment">Adjust Red Channel</label><input type="range" value="0" id="redAdjustment" min="-500" step="10" max="500" />
-					<label for="blueAdjustment">Adjust Blue Channel</label><input type="range" value="0" id="blueAdjustment" min="-500" step="10" max="500" />
-					<label for="greenAdjustment">Adjust Green Channel</label><input type="range" value="0" id="greenAdjustment" min="-500" step="10" max="500" />
-				</div>
-			</div>
 		</section>
 	</div>
 
