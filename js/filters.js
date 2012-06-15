@@ -62,51 +62,19 @@ hipstermatic.filter = {
 			ctx.globalCompositeOperation = "source-over"; //setting back to default
 			ctx.fillStyle="#000";
 		}
-		/*if (config.brightness || config.greyscale || config.redAdjustment || config.greenAdjustment || config.blueAdjustment){
-				
-			//merge pixel tweaking somehow - only want one set of these loops - too dangerous doing these all at once
-			//try negatives to make darker?
-			for (var y = 0; y < imgPixels.height; y++) {
-				for (var x = 0; x < imgPixels.width; x++) {
-					var i = (y * 4) * imgPixels.width + x * 4;
-					var adjustment;
-					if (config.brightness){
-						adjustment = config.brightness;
-					
-						hipstermatic.filter.setPixel(imgPixels, i,  adjustment, adjustment, adjustment);
-					}
-					if (config.greyscale){
-						
-						adjustment = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
-						hipstermatic.filter.setPixel(imgPixels, i, adjustment, adjustment, adjustment);
-					}
-					if (config.redAdjustment){
-
-					}
-					if (config.greenAdjustment){
-
-					}
-					if (config.blueAdjustment){
-
-						var r = config.redAdjustment,
-						g = config.greenAdjustment,
-						b =config.blueAdjustment;
-					}
-				}
-			}
-			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height); // add only one placement for all pixelTweaking
-		}*/
-		if (config.brightness) {
+		if (config.brightness || config.channelAdjustment) {
 			//try negatives to make darker?
 			for (var y = 0; y < imgPixelsHeight; y++) {
 				for (var x = 0; x < imgPixelsWidth; x++) {
-					var i = (y * 4) * imgPixelsWidth + x * 4;
-					//avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3,
-					//adjustment;
+					var i = (y * 4) * imgPixelsWidth + x * 4,
+					avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3,
+					r, g, b;
+					if (config.brightness) {r = config.brightness,g = config.brightness, b = config.brightness;}
+					if (config.channelAdjustment) {r = config.channelAdjustment.red,g = config.channelAdjustment.green, b = config.channelAdjustment.blue;}
 
-					imgPixels.data[i] += config.brightness;
-					imgPixels.data[i + 1] += config.brightness;
-					imgPixels.data[i + 2] += config.brightness;
+					imgPixels.data[i] += r;
+					imgPixels.data[i + 1] += g;
+					imgPixels.data[i + 2] += b;
 				}
 			}
 			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixelsWidth, imgPixelsHeight); // add only one placement for all pixelTweaking
@@ -125,19 +93,6 @@ hipstermatic.filter = {
 			}
 			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixelsWidth, imgPixelsHeight);
 		}
-		if (config.redAdjustment || config.greenAdjustment || config.blueAdjustment) {
-			for (var y = 0; y < imgPixelsHeight; y++) {
-				for (var x = 0; x < imgPixelsWidth; x++) {
-					var i = (y * 4) * imgPixelsWidth + x * 4;
-
-					imgPixels.data[i] +=config.redAdjustment;
-					imgPixels.data[i + 1] +=config.greenAdjustment;
-					imgPixels.data[i + 2] +=config.blueAdjustment;
-				}
-			}
-			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixelsWidth, imgPixelsHeight);
-		}
-
 		/*if (config.gaussian) {
 			function Matrix(){
 				this.rows = [];
@@ -302,13 +257,14 @@ hipstermatic.filter = {
 			//console.log($(this).attr("value"));
 			canvas.trigger("revert");
 			
-			var t = {};
-		
+			var t = {channelAdjustment: {}};
+			$(".channelAdjustment input").each(function(){
 				var value = parseInt($(this).attr("value"), 10);
 				var id = $(this).attr("id").toString();
-				t[id] = value;
-		
-			//console.log(t);
+				t.channelAdjustment[id] = value;
+
+			});
+			
 			hipstermatic.filter.apply(t);
 		});
 		$(".revert").bind("click", function(e){
