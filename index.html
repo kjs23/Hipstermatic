@@ -23,7 +23,7 @@
 
 		<section id="content">
 			<canvas id="myCanvas" width="500" height="500"></canvas>
-
+			 <video id="live" autoplay></video>
 			<form action="#" method="post">
 				<label for="input">Select your image:</label>
 				<input id="input" name="input" type="file" />
@@ -38,15 +38,20 @@
 				<li><a href="#" data-filter="greyscale">GreyScale</a></li>
 				<li><a href="#" data-filter="hudson">Hudson</a></li>
 				<li><a href="#" data-filter="inkwell">Inkwell</a></li>
-			    <li><a href="#" data-filter="brightness">Brightness/Contrast</a></li>			
+			    <li><a href="#" data-filter="brightness">Brightness/Contrast</a></li>
 			    <li>
 			    	<div class="controls">
 						<p><label for="brightness">Brightness</label><input type="range" value="0" id="brightness" min="-255" step="1" max="255" /><p>
+						<div class="vingetteAdjustment">
+							<h3>Vingette adjustment</h3>
+							<p><label for="shadowStrength">Shadow Strength</label><input type="range" value="0" id="shadowStrength" min="0" step="0.1" max="1" /><p>
+								<p><label for="highlightStrength">Highlight Strength</label><input type="range" value="0" id="highlightStrength" min="0" step="0.1" max="1" /><p>
+						</div>	
 						<div class="channelAdjustment">
 							<h3>Channel adjustment</h3>
-							<p><label for="red">Red</label><input type="range" value="0" id="redAdjustment" min="-225" step="1" max="255" /><p>
-							<p><label for="blue">Blue</label><input type="range" value="0" id="blueAdjustment" min="-225" step="1" max="255" /><p>
-							<p><label for="green">Green</label><input type="range" value="0" id="greenAdjustment" min="-225" step="1" max="255" /><p>
+							<p><label for="red">Red</label><input type="range" value="0" id="red" min="-225" step="1" max="255" /><p>
+							<p><label for="blue">Blue</label><input type="range" value="0" id="blue" min="-225" step="1" max="255" /><p>
+							<p><label for="green">Green</label><input type="range" value="0" id="green" min="-225" step="1" max="255" /><p>
 						</div>
 					</div>
 				</lI>
