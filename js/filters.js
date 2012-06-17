@@ -56,6 +56,12 @@ hipstermatic.filter = {
 					r, g, b;
 					if (config.brightness) {r = config.brightness,g = config.brightness, b = config.brightness;}
 					if (config.channelAdjustment) {r = config.channelAdjustment.red,g = config.channelAdjustment.green, b = config.channelAdjustment.blue;}
+					if (config.sepia){
+						r = (imgPixels.data[i]*0.393) + (imgPixels.data[i+1]*0.769) + (imgPixels.data[i+2]*0.189);
+						g = (imgPixels.data[i]*0.349) + (imgPixels.data[i+1]*0.686) + (imgPixels.data[i+2]*0.168);
+						b = (imgPixels.data[i]*0.272) + (imgPixels.data[i+1]*0.534) + (imgPixels.data[i+2]*0.131);
+					}
+
 					if (config.greyscale){
 						//setPixel
 						//add bluetones etc
@@ -225,7 +231,8 @@ hipstermatic.filter = {
 		var canvas = $(hipstermatic.vars.canvasSelector),
 		filterLinks = $(hipstermatic.vars.filterSelector).find("a"),
 		vingetteAdjustmentInputs = $(".vingetteAdjustment input"),
-		channelAdjustmentInputs = $(".channelAdjustment input");
+		channelAdjustmentInputs = $(".channelAdjustment input"),
+		canvasUrl;
 		filterLinks.bind("click keydown", function(e) {
 			// call function to apply the filter
 			if (!e.keyCode || e.keyCode === "13"){
@@ -235,11 +242,10 @@ hipstermatic.filter = {
 					alert("upload a picture first");
 				}
 				else {
-					
 					canvas.trigger("revert");
 					$this.addClass("active");
 					if (hipstermatic.filter.config[type]) {
-						var canvasUrl = hipstermatic.filter.apply(hipstermatic.filter.config[type]);
+						canvasUrl = hipstermatic.filter.apply(hipstermatic.filter.config[type]);
 					}
 					else {
 						//no config related to this filter type
@@ -282,9 +288,10 @@ hipstermatic.filter = {
 				return false;
 			}
 		});
-		canvas.bind("revert", function(){
+		canvas.bind("revert", function(e){
+			var image = hipstermatic.vars.imgObject;
 			//puts back to original image
-			hipstermatic.vars.canvasContext.drawImage(hipstermatic.vars.imgObject, 0, 0, hipstermatic.vars.canvasWidth, hipstermatic.vars.canvasHeight);
+			hipstermatic.vars.canvasContext.drawImage(image, 0, 0, hipstermatic.vars.canvasWidth, hipstermatic.vars.canvasHeight);
 			filterLinks.removeClass("active");
 		});
 	},
