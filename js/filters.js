@@ -242,10 +242,6 @@ hipstermatic.filter = {
 		}
 	},
 	setSliders: function(config){
-		console.log("sliders");
-		console.log(config);
-		
-
 		var shadowStrength = (config.vingette) ? config.vingette.shadowStrength : 0,
 		highlightStrength = (config.vingette) ? config.vingette.highlightStrength : 0,
 		brightness = (config.brightness) ? config.brightness : 0,
@@ -295,7 +291,7 @@ hipstermatic.filter = {
 
 		});
 		$("#brightness").bind("change", function(){
-			canvas.trigger("revert",[true]);
+			canvas.trigger("revert", [true]);
 			var t = {};
 			var activeFilter = $(".active");
 			if (activeFilter){
@@ -315,26 +311,42 @@ hipstermatic.filter = {
 		channelAdjustmentInputs.bind("change", function(){
 			canvas.trigger("revert", [true]);
 			
-			var t = {channelAdjustment: {}};
+			var t = {channelAdjustment: {}},
+			activeFilter = $(".active"),
+			type = activeFilter.attr("data-filter"),
+			originalPropertys = hipstermatic.filter.config[type];
 			channelAdjustmentInputs.each(function(){
 				var value = parseInt($(this).attr("value"), 10);
 				var id = $(this).attr("id").toString();
 				t.channelAdjustment[id] = value;
 			});
-			
-			hipstermatic.filter.apply(t);
+			if (activeFilter){
+				var filterSettings = $.extend({}, originalPropertys, t); //extend original filters
+				hipstermatic.filter.apply(filterSettings);
+			}
+			else{
+				hipstermatic.filter.apply(t);
+			}
 		});
 		vingetteAdjustmentInputs.bind("change", function(){
 			canvas.trigger("revert", [true]);
 			var t = {vingette: {}};
+			activeFilter = $(".active"),
+			type = activeFilter.attr("data-filter"),
+			originalPropertys = hipstermatic.filter.config[type];
 			vingetteAdjustmentInputs.each(function(){
 				//build config to pass through
 				var value = $(this).attr("value");
 				var id = $(this).attr("id").toString();
 				t.vingette[id] = value;
 			});
-			
-			hipstermatic.filter.apply(t);
+			if (activeFilter){
+				var filterSettings = $.extend({}, originalPropertys, t); //extend original filters
+				hipstermatic.filter.apply(filterSettings);
+			}
+			else{
+				hipstermatic.filter.apply(t);
+			}
 		});
 		$(".revert").bind("click keydown", function(e){
 			if (!e.keyCode || e.keyCode === "13"){
