@@ -53,39 +53,27 @@ hipstermatic.filter = {
 					r, g, b;
 					if (config.brightness) {
 						r = config.brightness,g = config.brightness, b = config.brightness;
-						imgPixels.data[i] += r;
-						imgPixels.data[i + 1] += g;
-						imgPixels.data[i + 2] += b;
+						imgPixels = hipstermatic.filter.adjustPixel(imgPixels, i, r, g, b);
 					}
 					if (config.channelAdjustment) {
 						r = config.channelAdjustment.red,g = config.channelAdjustment.green, b = config.channelAdjustment.blue;
-						imgPixels.data[i] += r;
-						imgPixels.data[i + 1] += g;
-						imgPixels.data[i + 2] += b;	
+						imgPixels = hipstermatic.filter.adjustPixel(imgPixels, i, r, g, b);
+						
 					}
 					if (config.sepia){
 						r = (imgPixels.data[i]*0.393) + (imgPixels.data[i+1]*0.769) + (imgPixels.data[i+2]*0.189);
 						g = (imgPixels.data[i]*0.349) + (imgPixels.data[i+1]*0.686) + (imgPixels.data[i+2]*0.168);
 						b = (imgPixels.data[i]*0.272) + (imgPixels.data[i+1]*0.534) + (imgPixels.data[i+2]*0.131);
-						imgPixels.data[i] += r;
-						imgPixels.data[i + 1] += g;
-						imgPixels.data[i + 2] += b;
-					}
+						imgPixels = hipstermatic.filter.adjustPixel(imgPixels, i, r, g, b);
 
-					else if (config.greyscale){
-						//setPixel
-						//add bluetones etc
+					}
+					if (config.greyscale){
 						var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
 						imgPixels.data[i] = avg;
 						imgPixels.data[i + 1] = avg;
 						imgPixels.data[i + 2] = avg;
 					}
-					else {
-						//adjust pixel
-						imgPixels.data[i] += r;
-						imgPixels.data[i + 1] += g;
-						imgPixels.data[i + 2] += b;
-					}
+					
 				}
 			}
 
@@ -258,6 +246,12 @@ hipstermatic.filter = {
 		
 		//console.log(config.brightness);
 	},
+	adjustPixel: function(imageData, index, r, g, b){
+		imageData.data[index] += r;
+		imageData.data[index + 1] += g;
+		imageData.data[index + 2] += b;
+		return imageData;
+	},
 	bindEvents:function(){
 		var canvas = $(hipstermatic.vars.canvasSelector),
 		filterLinks = $(hipstermatic.vars.filterSelector).find("a"),
@@ -279,7 +273,6 @@ hipstermatic.filter = {
 					if (hipstermatic.filter.config[type]) {
 						canvasUrl = hipstermatic.filter.apply(hipstermatic.filter.config[type]);
 						hipstermatic.filter.setSliders(hipstermatic.filter.config[type]);
-						//canvas.trigger("saveToLocalStorage", canvasUrl);
 					}
 					else {
 						//no config related to this filter type
@@ -357,35 +350,8 @@ hipstermatic.filter = {
 		canvas.bind("revert", function (event, retainFilter){
 			var image = hipstermatic.vars.imgObject;
 			//puts back to original image
-			
-			if(retainFilter){
-				/*console.log("keep canvas");
-				var savedImage = JSON.parse(localStorage.getItem("imageData"));
-				var originalSrc = image.src;
-				console.log(savedImage.lastFiltered);*/
-				//image.setAttribute("src", savedImage.lastFiltered);
-				//cornersole.log(image.src);
-				//console.log(image.src);
-				hipstermatic.vars.canvasContext.drawImage(image, 0, 0, hipstermatic.vars.canvasWidth, hipstermatic.vars.canvasHeight);
-				//image.src = originalSrc;
-			}
-			else
-			{
 			hipstermatic.vars.canvasContext.drawImage(image, 0, 0, hipstermatic.vars.canvasWidth, hipstermatic.vars.canvasHeight);
-			filterLinks.removeClass("active");
-			}
-		});
-		canvas.bind("saveToLocalStorage", function(canvasData){
-		if (localStorage){
-				var imageData = {};
-				//var xxx = JSON.parse(localStorage.getItem("imageData"));
-				imageData.lastFiltered = canvasData;
-				//console.log(xxx);
-				localStorage.setItem("imageData", JSON.stringify(imageData));
-		}
-		else{
-		//no local storage available
-		}
+			if(!retainFilter){filterLinks.removeClass("active");}
 		});
 	},
 		
