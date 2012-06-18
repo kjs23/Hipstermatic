@@ -45,9 +45,7 @@ hipstermatic.filter = {
 			imgPixelsHeight = imgPixels.height,
 			imgPixelsWidth = imgPixels.width;
 
-		if (config.vingette) {
-			this.setVingette(config, ctx, canvasWidth, canvasHeight);
-		}
+	
 		if (config.brightness || config.channelAdjustment || config.greyscale || config.sepia) {
 			for (var y = 0; y < imgPixelsHeight; y++) {
 				for (var x = 0; x < imgPixelsWidth; x++) {
@@ -63,7 +61,7 @@ hipstermatic.filter = {
 						r = config.channelAdjustment.red,g = config.channelAdjustment.green, b = config.channelAdjustment.blue;
 						imgPixels.data[i] += r;
 						imgPixels.data[i + 1] += g;
-						imgPixels.data[i + 2] += b;
+						imgPixels.data[i + 2] += b;	
 					}
 					if (config.sepia){
 						r = (imgPixels.data[i]*0.393) + (imgPixels.data[i+1]*0.769) + (imgPixels.data[i+2]*0.189);
@@ -97,7 +95,9 @@ hipstermatic.filter = {
 		if (config.gaussian) {
 			this.setGaussian(config, ctx, canvasWidth, canvasHeight, imgPixels);
 		}
-
+		if (config.vingette) {
+			this.setVingette(config, ctx, canvasWidth, canvasHeight);
+		}
 		if (config.border){
 			this.setBorder(config, ctx, canvasWidth, canvasHeight);
 		}
@@ -296,17 +296,17 @@ hipstermatic.filter = {
 		});
 		$("#brightness").bind("change", function(){
 			canvas.trigger("revert",[true]);
-			var t;
+			var t = {};
 			var activeFilter = $(".active");
 			if (activeFilter){
-				var type = activeFilter.attr("data-filter");
-				t = hipstermatic.filter.config[type];
-				t.brightness = (t[brightness]) ? t[brightness] + parseInt($(this).attr("value"), 10) : parseInt($(this).attr("value"), 10);
-				console.log(t);
-				hipstermatic.filter.apply(t);
+				var type = activeFilter.attr("data-filter"),
+				originalPropertys = hipstermatic.filter.config[type],
+				filterSettings = $.extend({}, originalPropertys, t); //extend original filters
+				filterSettings.brightness = parseInt($(this).attr("value"), 10);
+				hipstermatic.filter.apply(filterSettings);
 			}
 			else {
-				t = {brightness: parseInt($(this).attr("value"), 10)};
+				t.brightness = parseInt($(this).attr("value"), 10);
 				hipstermatic.filter.apply(t);
 			}
 
