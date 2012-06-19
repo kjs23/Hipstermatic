@@ -1,3 +1,12 @@
+/**
+* Hipstermatic - Arty <canvas> photos filters
+*
+* @version	0.1
+* @author	Kevin Stevens, Clare Hyam, Chloe Watts, Jasal Vadgama
+* @require	jquery 1.7.1+
+* @license	GPL v3
+**/
+
 var hipstermatic = hipstermatic || {};
 
 hipstermatic.filter = {
@@ -69,9 +78,10 @@ hipstermatic.filter = {
 					}
 					if (config.greyscale){
 						var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
-						imgPixels.data[i] = avg;
+						/*imgPixels.data[i] = avg;
 						imgPixels.data[i + 1] = avg;
-						imgPixels.data[i + 2] = avg;
+						imgPixels.data[i + 2] = avg;*/
+						imgPixels = hipstermatic.filter.setPixel(imgPixels, i, avg, avg, avg);
 					}
 					
 				}
@@ -230,6 +240,7 @@ hipstermatic.filter = {
 		}
 	},
 	setSliders: function(config){
+		//major optimisation needed here
 		var shadowStrength = (config.vingette) ? config.vingette.shadowStrength : 0,
 		highlightStrength = (config.vingette) ? config.vingette.highlightStrength : 0,
 		brightness = (config.brightness) ? config.brightness : 0,
@@ -252,6 +263,54 @@ hipstermatic.filter = {
 		imageData.data[index + 2] += b;
 		return imageData;
 	},
+	setPixel: function(imageData, index, r, g, b){
+		imageData.data[index] = r;
+		imageData.data[index + 1] = g;
+		imageData.data[index + 2] = b;
+		return imageData;
+	},
+	mergeFiltersSliderConfig: function(){
+		//grab last applied filter config
+		var activeFilter = $(".active");
+		var sliderConfig = {channelAdjustment:{}, vingette: {}, brightness:{}};
+		//loop through filter sliders - add values to slider config
+		channelAdjustmentInputs = $(".channelAdjustment input");
+		vingetteAdjustmentInputs = $(".vingetteAdjustment input");
+		channelAdjustmentInputs.each(function(){ //maybe change these to fieldsets
+				var value = parseInt($(this).attr("value"), 10);
+				var id = $(this).attr("id").toString();
+				sliderConfig.channelAdjustment[id] = value;
+		});
+		vingetteAdjustmentInputs.each(function(){
+				//build config to pass through
+				var value = $(this).attr("value"); //parseInt rounds this down, need to have a look at this
+				var id = $(this).attr("id").toString();
+				//console.log(value);
+				sliderConfig.vingette[id] = value;
+		});
+
+		sliderConfig.brightness = parseInt($("#brightness").attr("value"), 10);
+
+		
+		
+		//capture values if null | value = 0
+		
+		
+		if (activeFilter.length > 0){
+			var type = activeFilter.attr("data-filter");
+			var filterConfig = hipstermatic.filter.config[type];
+			//extend config
+			//set sliderConfig to extended config
+			filterSettings = $.extend({}, filterConfig, sliderConfig);
+			//console.log(filterSettings);
+			sliderConfig = filterSettings;
+		}
+		
+			return sliderConfig;
+
+		
+
+	},
 	bindEvents:function(){
 		var canvas = $(hipstermatic.vars.canvasSelector),
 		filterLinks = $(hipstermatic.vars.filterSelector).find("a"),
@@ -263,12 +322,8 @@ hipstermatic.filter = {
 			if (!e.keyCode || e.keyCode === "13"){
 				var $this = $(this),
 				type = $this.attr("data-filter");
-				if ($this.hasClass("active") || hipstermatic.vars.canvasContext === ""){
-					alert("upload a picture first");
-				}
-				else {
+				if (!$this.hasClass("active")){
 					canvas.trigger("revert");
-					
 					$this.addClass("active");
 					if (hipstermatic.filter.config[type]) {
 						canvasUrl = hipstermatic.filter.apply(hipstermatic.filter.config[type]);
@@ -285,61 +340,19 @@ hipstermatic.filter = {
 		});
 		$("#brightness").bind("change", function(){
 			canvas.trigger("revert", [true]);
-			var t = {};
-			var activeFilter = $(".active");
-			if (activeFilter){
-				var type = activeFilter.attr("data-filter"),
-				originalPropertys = hipstermatic.filter.config[type],
-				filterSettings = $.extend({}, originalPropertys, t); //extend original filters
-				filterSettings.brightness = parseInt($(this).attr("value"), 10);
-				hipstermatic.filter.apply(filterSettings);
-			}
-			else {
-				t.brightness = parseInt($(this).attr("value"), 10);
-				hipstermatic.filter.apply(t);
-			}
-
+			var config = hipstermatic.filter.mergeFiltersSliderConfig();
+			hipstermatic.filter.apply(config);
 			
 		});
 		channelAdjustmentInputs.bind("change", function(){
 			canvas.trigger("revert", [true]);
-			
-			var t = {channelAdjustment: {}},
-			activeFilter = $(".active"),
-			type = activeFilter.attr("data-filter"),
-			originalPropertys = hipstermatic.filter.config[type];
-			channelAdjustmentInputs.each(function(){
-				var value = parseInt($(this).attr("value"), 10);
-				var id = $(this).attr("id").toString();
-				t.channelAdjustment[id] = value;
-			});
-			if (activeFilter){
-				var filterSettings = $.extend({}, originalPropertys, t); //extend original filters
-				hipstermatic.filter.apply(filterSettings);
-			}
-			else{
-				hipstermatic.filter.apply(t);
-			}
+			var config = hipstermatic.filter.mergeFiltersSliderConfig();
+			hipstermatic.filter.apply(config);
 		});
 		vingetteAdjustmentInputs.bind("change", function(){
 			canvas.trigger("revert", [true]);
-			var t = {vingette: {}};
-			activeFilter = $(".active"),
-			type = activeFilter.attr("data-filter"),
-			originalPropertys = hipstermatic.filter.config[type];
-			vingetteAdjustmentInputs.each(function(){
-				//build config to pass through
-				var value = $(this).attr("value");
-				var id = $(this).attr("id").toString();
-				t.vingette[id] = value;
-			});
-			if (activeFilter){
-				var filterSettings = $.extend({}, originalPropertys, t); //extend original filters
-				hipstermatic.filter.apply(filterSettings);
-			}
-			else{
-				hipstermatic.filter.apply(t);
-			}
+			var config = hipstermatic.filter.mergeFiltersSliderConfig();
+			hipstermatic.filter.apply(config);
 		});
 		$(".revert").bind("click keydown", function(e){
 			if (!e.keyCode || e.keyCode === "13"){
