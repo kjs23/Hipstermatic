@@ -240,20 +240,25 @@ hipstermatic.filter = {
 		}
 	},
 	setSliders: function(config){
-		//major optimisation needed here
-		var shadowStrength = (config.vingette) ? config.vingette.shadowStrength : 0,
-		highlightStrength = (config.vingette) ? config.vingette.highlightStrength : 0,
-		brightness = (config.brightness) ? config.brightness : 0,
-		redAdjustment = (config.channelAdjustment) ? config.channelAdjustment.red : 0,
-		blueAdjustment = (config.channelAdjustment) ? config.channelAdjustment.blue : 0,
-		greenAdjustment = (config.channelAdjustment) ? config.channelAdjustment.green : 0;
+		
+		if(config.vingette){
+			var shadowStrength = config.vingette.shadowStrength;
+			var highlightStrength = config.vingette.highlightStrength;
+		}
+		if (config.channelAdjustment){
+			var red = config.channelAdjustment.redAdjustment;
+			var green = config.channelAdjustment.greenAdjustment;
+			var blue = config.channelAdjustment.blueAdjustment;
+		}
+		
 
-		$("#brightness").attr("value", brightness);
-		$("#shadowStrength").attr("value", shadowStrength);
-		$("#highlightStrength").attr("value", highlightStrength);
-		$("#red").attr("value", redAdjustment);
-		$("#green").attr("value", blueAdjustment);
-		$("#blue").attr("value", greenAdjustment);
+		$("#brightness").attr("value", config.brightness || 0);
+		$("#shadowStrength").attr("value", shadowStrength || 0);
+		$("#highlightStrength").attr("value", highlightStrength || 0);
+		$("#red").attr("value", red || 0);
+		$("#green").attr("value", green || 0);
+		$("#blue").attr("value", blue || 0);
+		
 		
 		//console.log(config.brightness);
 	},
