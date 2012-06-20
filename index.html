@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title>Hipstermatic</title>
+	<title>Hipstergram</title>
 
 	<link href="css/reset.css" rel="stylesheet">
 	<link href="css/hipstermatic.css" rel="stylesheet">
@@ -16,25 +16,30 @@
 	<div id="pageWrapper">
 		<header id="header">
 			<hgroup>
-				<h1>Hipstermatic</h1>
+				<h1>Hipstergram</h1>
 				<h2>Fancy photo filter stuff for you folks that are too trendy</h2>
 			</hgroup>
 		</header>
 
 		<section id="content">
-			<canvas id="myCanvas" width="500" height="500"></canvas>
-			<form action="#" method="post">
-				<label for="input">Select your image:</label>
-				<input id="input" name="input" type="file" />
+			<canvas id="myCanvas" width="800" height="500"></canvas>
+
+			<form action="#" class="fileUpload" method="post">
+				<fieldset>
+					<label for="input">Select your image:</label>
+					<input id="input" name="input" type="file" />
+				</fieldset>
 			</form>
 		</section>
 
 		<section id="sidebar">
-			<h2>Filters</h2>
+			<a class="togglePanel" href="#">Image<br /> Options</a>
 
+			<h2>Filters</h2>
 			<div class="filters">
+				<p><a href="#" class="revert">Revert to original</a></p>
+
 				<ul>
-					<li><a href="#" class="revert">Original</a></li>
 					<li><a href="#" data-filter="greyscale">GreyScale</a></li>
 					<li><a href="#" data-filter="hudson">Hudson</a></li>
 					<li><a href="#" data-filter="inkwell">Inkwell</a></li>
@@ -42,31 +47,45 @@
 					<li><a href="#" data-filter="sepia">Sepia</a></li>
 				</ul>
 
-				<h3>Create your own</h3>
-				<p>Play with the sliders below and make your own filter.</p>
-				<ul class="controls">
-					<li class="vingetteAdjustment">
-						<h4>Vingette adjustment</h4>
-						<p><label for="shadowStrength">Shadow Strength</label><input type="range" value="0" id="shadowStrength" min="0" step="0.1" max="1" /><p>
-						<p><label for="highlightStrength">Highlight Strength</label><input type="range" value="0" id="highlightStrength" min="0" step="0.1" max="1" /><p>
-					</li>
-					<li class="channelAdjustment">
-						<h4>Channel adjustment</h4>
-						<p><label for="red">Red</label><input type="range" value="0" id="red" min="-225" step="1" max="255" /><p>
-						<p><label for="blue">Blue</label><input type="range" value="0" id="blue" min="-225" step="1" max="255" /><p>
-						<p><label for="green">Green</label><input type="range" value="0" id="green" min="-225" step="1" max="255" /><p>
-					</lI>
-					<li>
-						<h4>Extras</h4>
-						<label for="brightness">Brightness</label><input type="range" value="0" id="brightness" min="-255" step="1" max="255" />
-					</li>
-				</ul>
+				<div>
+					<h3>Create your own</h3>
+					<p>Play with the sliders below and make your own filter.</p>
+					<ul class="controls">
+						<li class="vingetteAdjustment">
+							<h4>Vingette adjustment</h4>
+							<p><label for="shadowStrength">Shadow Strength</label><input type="range" value="0" id="shadowStrength" min="0" step="0.1" max="1" /><p>
+							<p><label for="highlightStrength">Highlight Strength</label><input type="range" value="0" id="highlightStrength" min="0" step="0.1" max="1" /><p>
+						</li>
+						<li class="channelAdjustment">
+							<h4>Channel adjustment</h4>
+							<p><label for="red">Red</label><input type="range" value="0" id="red" min="-225" step="1" max="255" /><p>
+							<p><label for="blue">Blue</label><input type="range" value="0" id="blue" min="-225" step="1" max="255" /><p>
+							<p><label for="green">Green</label><input type="range" value="0" id="green" min="-225" step="1" max="255" /><p>
+						</lI>
+						<li>
+							<h4>Extras</h4>
+							<label for="brightness">Brightness</label><input type="range" value="0" id="brightness" min="-255" step="1" max="255" />
+						</li>
+					</ul>
+				</div>
 			</div>
+
+			<h2>Save your image</h2>
+			<form action="#" method="post">
+				<fieldset>
+					<label for="imageTitle">Title:</label>
+					<input id="imageTitle" name="imageTitle" type="text" />
+				</fieldset>
+			</form>
+
+			<p><a class="save" href="#">Save my image!</a></p>
 		</section>
 	</div>
 
 	<script src="js/jquery-1.7.1.min.js"></script>
+	<script src="js/json2.js"></script>
 	<script src="js/filters.js"></script>
+	<script src="js/storage.js"></script>
 	<script src="js/hipstermatic.js"></script>
 </body>
 </html> 

@@ -77,8 +77,11 @@ p {
 	margin-bottom: 10px;
 }
 a {
-	color: #ccc;
+	color: #000;
 	text-decoration: none;
+}
+h2 a {
+	color: #333;
 }
 a:hover,
 a:focus,
@@ -97,16 +100,23 @@ a:active,
 * Grid and Containers
 **/
 #pageWrapper {
-	width: 960px;
+	position: relative;
 	padding: 10px;
+	min-width: 960px;
+	overflow: hidden;
 }
 #content {
-	width: 600px;
-	float: left;
+	padding-left: 50%;
 }
 #sidebar {
-	float: left;
-	width: 360px;
+	visibility: hidden;
+	position: fixed;
+	top: -1px;
+	right: -1px;
+	padding: 20px 20px 0;
+	width: 250px;
+	background: #fff;
+	border: 1px solid #ccc;
 }
 
 /**
@@ -124,7 +134,7 @@ a:active,
 * Content
 **/
 canvas {
-	margin: 0 40px 30px;
+	margin: 0 0 30px -400px;
 	border: 1px solid #ccc;
 	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }
@@ -136,8 +146,33 @@ canvas {
 	margin-bottom: 5px;
 	list-style: none;
 }
-.filters a {}
+.filters li a {
+	color: #ccc;
+}
 
 .controls p {
 	margin-bottom: 0;
+}
+
+/**
+* Sidebar
+**/
+#sidebar .togglePanel {
+	position: absolute;
+	top: 100px;
+	left: 0;
+	padding: 10px;
+	background: #fff;
+	border: 1px solid #ccc;
+	border-right-color: #fff;
+	border-radius: 10px 0 0 10px;
+	color: #333;
+	font: normal 25px/1em LobsterTwoItalic;
+}
+
+/**
+* Form
+**/
+.fileUpload {
+	display: none;
 }
