@@ -106,7 +106,7 @@ a:active,
 	overflow: hidden;
 }
 #content {
-	padding-left: 50%;
+	//padding-left: 50%;
 }
 #sidebar {
 	visibility: hidden;
@@ -134,9 +134,17 @@ a:active,
 * Content
 **/
 canvas {
+	position: relative;
+	left: 50%;
 	margin: 0 0 30px -400px;
 	border: 1px solid #ccc;
 	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.newImage {
+	display: none;
+	margin-bottom: 30px;
+	text-align: center;
 }
 
 .filters ul {

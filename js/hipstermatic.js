@@ -76,6 +76,9 @@ hipstermatic.loadImageFromFile = function(e) {
 
 			// unbind the canvas click and show the 'change' button
 			$('canvas').off('click');
+			$('.newImage').css({
+				display: 'block'
+			});
 		};
 	};
 
@@ -125,7 +128,7 @@ hipstermatic.init = function() {
 		hipstermatic.storage.saveImage();
 	});
 
-	$('canvas').on('click', function() {
+	$('canvas, .newImage').on('click', function() {
 		// click the hidden form
 		$('#input').click();
 	});
