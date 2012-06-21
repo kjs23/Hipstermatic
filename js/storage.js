@@ -64,18 +64,52 @@ hipstermatic.storage = {
 
 	getImageList: function() {
 		// get list of saved images
-		var $ul = $('<ul class="imageList" />'),
+		var $ul = $('<ul class="imageList" id="savedImages" />'),
 			savedImages = hipstermatic.storage.config.imageJsonInStorage.images;
 
-		for (i = 0; i < savedImages.length; i++) {
-			//console.log(savedImages[i].title);
-
-			$('<li><img src="' + savedImages[i].data + '" /> ' + savedImages[i].title + '</li>').appendTo($ul);
+		// if there are saved images
+		if (savedImages.length > 0) {
+			// diplay the images
+			for (i = 0; i < savedImages.length; i++) {
+				$('<li><img src="' + savedImages[i].data + '" /> <span>' + savedImages[i].title + '</span></li>').appendTo($ul);
+			}
+		} else {
+			// show a message
+			$('<li>You\'ve got no saved images!</li>').appendTo($ul);
 		}
+
+		// bind clicks to img tags in list
+		$ul.find('li').on('click', 'img', function() {
+			hipstermatic.storage.viewImage(this);
+		});
+		// remove old list
+		$('#savedImages').remove();
+		// add new list
+		$ul.appendTo($('#content'));
 	},
 
-	viewImage: function() {
+	viewImage: function(img) {
 		// view selected image
+		var $img = $('<img src="' + img.src + '" />'),
+			$overlay = $('#overlay'),
+			$overlayContent = $('#overlayContent');
+
+		// show overlay
+		$overlay.css({
+			width: $(document).width(),
+			height: $(document).height()
+		}).fadeIn();
+
+		// set margins to center images
+		$img.load(function() {
+			$img.css({
+				marginTop: -($img.height() / 2),
+				marginLeft: -($img.width() / 2)
+			});
+		});
+
+		// add content to overlayContent
+		$overlayContent.html($img).fadeIn();
 	},
 
 	init: function() {
@@ -90,6 +124,13 @@ hipstermatic.storage = {
 		//console.log(localStorage['hipstermatic.images']);
 
 		hipstermatic.storage.getImageList();
+
+		if ($('#savedImages')) {
+			hipstermatic.storage.getImageList();
+			$('#overlay').on('click', function() {
+				$('#overlay, #overlayContent').fadeOut();
+			});
+		}
 	}
 };
 

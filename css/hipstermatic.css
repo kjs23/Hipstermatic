@@ -194,3 +194,33 @@ canvas {
 .fileUpload {
 	display: none;
 }
+
+/**
+* Saved images
+**/
+#savedImages {}
+#savedImages li {
+	float: left;
+	margin-right: 20px;
+	list-style: none;
+}
+#savedImages img {
+	display: block;
+	margin-bottom: 5px;
+	max-width: 200px;
+	max-height: 115px;
+}
+
+#overlay,
+#overlayContent {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.5);
+}
+#overlayContent {
+	background: none;
+	top: 50%;
+	left: 50%;
+}
