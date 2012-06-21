@@ -17,11 +17,13 @@ hipstermatic.storage = {
 		imageJsonInStorage: {} // parsed JSON of the image data in local storage
 	},
 
-	saveImage: function() {
+	saveImage: function(e) {
 		// get data URL (base64 encoded) and add to local storage
 		var canvas = document.getElementById(hipstermatic.vars.canvasSelector.split('#')[1]);
 			dataURL = canvas.toDataURL(),
 			imageTitle = $('#imageTitle').val();
+
+		e.preventDefault();
 
 		// if image title is empty
 		if (!imageTitle) {

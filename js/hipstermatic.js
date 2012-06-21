@@ -124,8 +124,8 @@ hipstermatic.init = function() {
 	});
 
 	// bind save button
-	$('.save').on('click', function() {
-		hipstermatic.storage.saveImage();
+	$('.save').on('click', function(e) {
+		hipstermatic.storage.saveImage(e);
 	});
 
 	$('canvas, .newImage').on('click', function() {
