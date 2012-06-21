@@ -123,9 +123,7 @@ hipstermatic.storage = {
 
 		//console.log(localStorage['hipstermatic.images']);
 
-		hipstermatic.storage.getImageList();
-
-		if ($('#savedImages')) {
+		if ($('#savedImages').length > 0) {
 			hipstermatic.storage.getImageList();
 			$('#overlay').on('click', function() {
 				$('#overlay, #overlayContent').fadeOut();
