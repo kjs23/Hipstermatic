@@ -200,7 +200,8 @@ hipstermatic.filter = {
 
 		var borderWidth = config.border.width,
 		borderColor = config.border.color;
-		if (config.border.isRounded){
+		//add some defaults
+		if (config.border.radius){//may need to make this better - set isrounded to true and use as trigger
 			//rounded corners
 			//cornerRadius = { upperLeft: cornerRadius, upperRight: cornerRadius, lowerLeft: cornerRadius, lowerRight: cornerRadius },
 			var radius = config.border.radius,
@@ -252,15 +253,31 @@ hipstermatic.filter = {
 			var green = config.channelAdjustment.greenAdjustment;
 			var blue = config.channelAdjustment.blueAdjustment;
 		}
-		
-
+		if (config.border) {
+			//may want to change this as reserved word
+			var width = config.border.width;
+			var color = config.border.color;
+			var radius = config.border.radius;
+			var isRounded = config.border.isRounded;
+			console.log(color);
+		}
+		//move selectors up
 		$("#brightness").attr("value", config.brightness || 0);
 		$("#shadowStrength").attr("value", shadowStrength || 0);
 		$("#highlightStrength").attr("value", highlightStrength || 0);
 		$("#red").attr("value", red || 0);
 		$("#green").attr("value", green || 0);
 		$("#blue").attr("value", blue || 0);
-		
+		$("#border").attr("checked", config.border || false);
+		if (config.border){
+			$(".borderAdjustment #color").attr("value", color || "#00000");
+			$(".borderAdjustment #width").attr("value", width || 0);
+			$(".borderAdjustment #isRounded").attr("value", isRounded || false);
+			$(".borderAdjustment #radius").attr("value", radius || 0);
+		}
+		else {
+			//hide this
+		}
 		
 		//console.log(config.brightness);
 	},
@@ -279,11 +296,12 @@ hipstermatic.filter = {
 	mergeFiltersSliderConfig: function(){
 		//grab last applied filter config
 		var activeFilter = $(".filters .active");
-		var sliderConfig = {channelAdjustment:{}, vingette: {}, brightness:{}};
+		var sliderConfig = {channelAdjustment:{}, vingette: {}, brightness:{}, border:{}};
 		//loop through filter sliders - add values to slider config
 		
 		channelAdjustmentInputs = $(".channelAdjustment input");
 		vingetteAdjustmentInputs = $(".vingetteAdjustment input");
+		borderAdjustmentInputs = $(".borderAdjustment input");
 		channelAdjustmentInputs.each(function(){ //maybe change these to fieldsets
 				var value = parseInt($(this).attr("value"), 10);
 				var id = $(this).attr("id").toString();
@@ -296,7 +314,12 @@ hipstermatic.filter = {
 				//console.log(value);
 				sliderConfig.vingette[id] = value;
 		});
-
+		borderAdjustmentInputs.each(function(){
+				var value = parseInt($(this).attr("value"), 10);//need to work out color seperatelt
+				var id = $(this).attr("id").toString();
+				sliderConfig.border[id] = value;
+				
+		});
 		sliderConfig.brightness = parseInt($("#brightness").attr("value"), 10);
 
 		
@@ -361,6 +384,22 @@ hipstermatic.filter = {
 		vingetteAdjustmentInputs.bind("change", function(){
 			canvas.trigger("revert", [true]);
 			var config = hipstermatic.filter.mergeFiltersSliderConfig();
+			hipstermatic.filter.apply(config);
+		});
+		$("#border").bind("change", function(){
+			canvas.trigger("revert", [true]);
+			console.log("turn on/off border");
+			if($(this).is(":checked")){
+				//turn on borders
+			}
+			else {
+				//turn off borders
+			}
+		});
+		$(".borderAdjustment input").bind("change", function(){
+			canvas.trigger("revert", [true]);
+			var config = hipstermatic.filter.mergeFiltersSliderConfig();
+			console.log(config);
 			hipstermatic.filter.apply(config);
 		});
 		$(".revert").bind("click keydown", function(e){
