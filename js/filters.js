@@ -69,13 +69,7 @@ hipstermatic.filter = {
 						imgPixels = hipstermatic.filter.adjustPixel(imgPixels, i, r, g, b);
 						
 					}
-					/*if (config.sepia){
-						r = (imgPixels.data[i]*0.393) + (imgPixels.data[i+1]*0.769) + (imgPixels.data[i+2]*0.189);
-						g = (imgPixels.data[i]*0.349) + (imgPixels.data[i+1]*0.686) + (imgPixels.data[i+2]*0.168);
-						b = (imgPixels.data[i]*0.272) + (imgPixels.data[i+1]*0.534) + (imgPixels.data[i+2]*0.131);
-						imgPixels = hipstermatic.filter.adjustPixel(imgPixels, i, r, g, b);
-
-					}*/
+					
 					if (config.greyscale || config.sepia){
 						var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
 						imgPixels = hipstermatic.filter.setPixel(imgPixels, i, avg, avg, avg);
@@ -103,13 +97,13 @@ hipstermatic.filter = {
 
 	},
 	setSepia: function(config, ctx, canvasWidth, canvasHeight){
-		console.log("set Sepia");
+		
 		ctx.fillStyle = "rgba(202, 119, 30, 0.18)";
 		ctx.fillRect(0,0,canvasWidth,canvasHeight);
 		ctx.fillStyle = "rgba(0, 0, 0, 0.14)";
 		ctx.fillRect(0,0,canvasWidth,canvasHeight);
 		ctx.fillStyle = "#000";
-		console.log(config);
+		
 	},
 	setGaussian: function(config, ctx, canvasWidth, canvasHeight, imageData){
 			function Matrix(){
