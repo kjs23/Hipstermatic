@@ -69,18 +69,15 @@ hipstermatic.filter = {
 						imgPixels = hipstermatic.filter.adjustPixel(imgPixels, i, r, g, b);
 						
 					}
-					if (config.sepia){
+					/*if (config.sepia){
 						r = (imgPixels.data[i]*0.393) + (imgPixels.data[i+1]*0.769) + (imgPixels.data[i+2]*0.189);
 						g = (imgPixels.data[i]*0.349) + (imgPixels.data[i+1]*0.686) + (imgPixels.data[i+2]*0.168);
 						b = (imgPixels.data[i]*0.272) + (imgPixels.data[i+1]*0.534) + (imgPixels.data[i+2]*0.131);
 						imgPixels = hipstermatic.filter.adjustPixel(imgPixels, i, r, g, b);
 
-					}
-					if (config.greyscale){
+					}*/
+					if (config.greyscale || config.sepia){
 						var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
-						/*imgPixels.data[i] = avg;
-						imgPixels.data[i + 1] = avg;
-						imgPixels.data[i + 2] = avg;*/
 						imgPixels = hipstermatic.filter.setPixel(imgPixels, i, avg, avg, avg);
 					}
 					
@@ -89,7 +86,9 @@ hipstermatic.filter = {
 
 			ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixelsWidth, imgPixelsHeight); // add only one placement for all pixelTweaking
 		}
-	
+		if (config.sepia) {
+			this.setSepia(config, ctx, canvasWidth, canvasHeight);
+		}
 		if (config.gaussian) {
 			this.setGaussian(config, ctx, canvasWidth, canvasHeight, imgPixels);
 		}
@@ -102,6 +101,15 @@ hipstermatic.filter = {
 		
 		return canvas.toDataURL(); //not sure where to put this yet but seems useful
 
+	},
+	setSepia: function(config, ctx, canvasWidth, canvasHeight){
+		console.log("set Sepia");
+		ctx.fillStyle = "rgba(202, 119, 30, 0.18)";
+		ctx.fillRect(0,0,canvasWidth,canvasHeight);
+		ctx.fillStyle = "rgba(0, 0, 0, 0.14)";
+		ctx.fillRect(0,0,canvasWidth,canvasHeight);
+		ctx.fillStyle = "#000";
+		console.log(config);
 	},
 	setGaussian: function(config, ctx, canvasWidth, canvasHeight, imageData){
 			function Matrix(){
@@ -276,9 +284,10 @@ hipstermatic.filter = {
 	},
 	mergeFiltersSliderConfig: function(){
 		//grab last applied filter config
-		var activeFilter = $(".active");
+		var activeFilter = $(".filters .active");
 		var sliderConfig = {channelAdjustment:{}, vingette: {}, brightness:{}};
 		//loop through filter sliders - add values to slider config
+		
 		channelAdjustmentInputs = $(".channelAdjustment input");
 		vingetteAdjustmentInputs = $(".vingetteAdjustment input");
 		channelAdjustmentInputs.each(function(){ //maybe change these to fieldsets
@@ -302,6 +311,7 @@ hipstermatic.filter = {
 		
 		
 		if (activeFilter.length > 0){
+
 			var type = activeFilter.attr("data-filter");
 			var filterConfig = hipstermatic.filter.config[type];
 			//extend config
