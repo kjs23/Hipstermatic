@@ -240,26 +240,23 @@ hipstermatic.filter = {
 		//grab last applied filter config
 		var activeFilter = $(".filters .active");
 		var sliderConfig = {channelAdjustment:{}, vingette: {}, brightness:{}};
+		var selectors = hipstermatic.filter.selectors;
 		//loop through filter sliders - add values to slider config
-		
-		channelAdjustmentInputs = hipstermatic.filter.selectors.channelAdjustmentInputs;
-		vingetteAdjustmentInputs = hipstermatic.filter.selectors.vingetteAdjustmentInputs;
-		borderAdjustmentInputs = hipstermatic.filter.selectors.borderAdjustmentInputs;
-		channelAdjustmentInputs.each(function(){ //maybe change these to fieldsets
+		selectors.channelAdjustmentInputs.each(function(){ //maybe change these to fieldsets
 				var value = parseInt($(this).attr("value"), 10);
 				var id = $(this).attr("id").toString();
 				sliderConfig.channelAdjustment[id] = value;
 		});
-		vingetteAdjustmentInputs.each(function(){
+		selectors.vingetteAdjustmentInputs.each(function(){
 				//build config to pass through
 				var value = $(this).attr("value"); //parseInt rounds this down, need to have a look at this
 				var id = $(this).attr("id").toString();
 				//console.log(value);
 				sliderConfig.vingette[id] = value;
 		});
-		if (hipstermatic.filter.selectors.borderCheckBox.is(":checked")){
+		if (selectors.borderCheckBox.is(":checked")){
 			sliderConfig.border = {};
-			borderAdjustmentInputs.each(function(){
+			selectors.borderAdjustmentInputs.each(function(){
 					var $this = $(this);
 					var value = $this.attr("value");//need to work out color seperatelt
 					if ($this.attr("type") == "range"){
@@ -273,37 +270,32 @@ hipstermatic.filter = {
 			});
 		}
 
-		sliderConfig.brightness = parseInt(hipstermatic.filter.selectors.brightnessInput.attr("value"), 10);
-		
-		
-		
+		sliderConfig.brightness = parseInt(selectors.brightnessInput.attr("value"), 10);
 		//capture values if null | value = 0
-		
-		
 		if (activeFilter.length > 0){
-
-			var type = activeFilter.attr("data-filter");
-			var filterConfig = hipstermatic.filter.config[type];
+			var type = activeFilter.attr("data-filter"),
+			filterConfig = hipstermatic.filter.config[type];
 			//extend config
 			//set sliderConfig to extended config
 			filterSettings = $.extend({}, filterConfig, sliderConfig);
-				if (!hipstermatic.filter.selectors.borderCheckBox.is(":checked"))
+				if (!selectors.borderCheckBox.is(":checked"))
 				{
 					delete filterSettings.border;
 				}
 			sliderConfig = filterSettings;
 		}
 	
-			return sliderConfig;
+		return sliderConfig;
 
 		
 
 	},
 	bindEvents:function(){
-		var canvas = $(hipstermatic.vars.canvasSelector),
+		var selectors = hipstermatic.filter.selectors,
+		canvas = $(hipstermatic.vars.canvasSelector),
 		filterLinks = $(hipstermatic.vars.filterSelector).find("a"),
-		vingetteAdjustmentInputs = hipstermatic.filter.selectors.vingetteAdjustmentInputs,
-		channelAdjustmentInputs = hipstermatic.filter.selectors.channelAdjustmentInputs,
+		vingetteAdjustmentInputs = selectors.vingetteAdjustmentInputs,
+		channelAdjustmentInputs = selectors.channelAdjustmentInputs,
 		canvasUrl;
 		filterLinks.bind("click keydown", function(e) {
 			// call function to apply the filter
@@ -326,23 +318,23 @@ hipstermatic.filter = {
 			}
 
 		});
-		hipstermatic.filter.selectors.brightnessInput.bind("change", function(){
+		selectors.brightnessInput.bind("change", function(){
 			canvas.trigger("revert", [true]);
 			var config = hipstermatic.filter.mergeFiltersSliderConfig();
 			hipstermatic.filter.apply(config);
 			
 		});
-		channelAdjustmentInputs.bind("change", function(){
+		selectors.channelAdjustmentInputs.bind("change", function(){
 			canvas.trigger("revert", [true]);
 			var config = hipstermatic.filter.mergeFiltersSliderConfig();
 			hipstermatic.filter.apply(config);
 		});
-		vingetteAdjustmentInputs.bind("change", function(){
+		selectors.vingetteAdjustmentInputs.bind("change", function(){
 			canvas.trigger("revert", [true]);
 			var config = hipstermatic.filter.mergeFiltersSliderConfig();
 			hipstermatic.filter.apply(config);
 		});
-		hipstermatic.filter.selectors.borderCheckBox.bind("change", function(){
+		selectors.borderCheckBox.bind("change", function(){
 			canvas.trigger("revert", [true]);
 			var config = hipstermatic.filter.mergeFiltersSliderConfig();
 		
@@ -360,13 +352,13 @@ hipstermatic.filter = {
 			}
 			hipstermatic.filter.apply(config);
 		});
-		hipstermatic.filter.selectors.borderAdjustmentInputs.bind("change", function(){
+		selectors.borderAdjustmentInputs.bind("change", function(){
 			canvas.trigger("revert", [true]);
 			var config = hipstermatic.filter.mergeFiltersSliderConfig();
 			//console.log(config);
 			hipstermatic.filter.apply(config);
 		});
-		hipstermatic.filter.selectors.revertTrigger.bind("click keydown", function(e){
+		selectors.revertTrigger.bind("click keydown", function(e){
 			if (!e.keyCode || e.keyCode === "13"){
 				canvas.trigger("revert");
 				return false;
