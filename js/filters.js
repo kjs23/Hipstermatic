@@ -13,10 +13,9 @@ hipstermatic.filter = {
 	config: {
 		hudson: {
 			border: {
-				isRounded: true,
 				radius: 10,
 				width: 10,
-				color: "black"
+				color: "#000000"
 			},
 			vingette: {
 				shadowStrength: 0.5,
@@ -27,7 +26,7 @@ hipstermatic.filter = {
 			greyscale: true,
 			border: {
 				width: 20,
-				color: "white"
+				color: "#ffffff"
 			}
 		},
 		sepia: {
@@ -90,7 +89,9 @@ hipstermatic.filter = {
 			this.setVingette(config, ctx, canvasWidth, canvasHeight);
 		}
 		if (config.border){
-			this.setBorder(config, ctx, canvasWidth, canvasHeight);
+			if (config.border.width > 0){
+				this.setBorder(config, ctx, canvasWidth, canvasHeight);
+			}
 		}
 		
 		return canvas.toDataURL(); //not sure where to put this yet but seems useful
@@ -201,7 +202,7 @@ hipstermatic.filter = {
 		var borderWidth = config.border.width,
 		borderColor = config.border.color;
 		//add some defaults
-		if (config.border.radius){//may need to make this better - set isrounded to true and use as trigger
+		if (config.border.radius){
 			//rounded corners
 			//cornerRadius = { upperLeft: cornerRadius, upperRight: cornerRadius, lowerLeft: cornerRadius, lowerRight: cornerRadius },
 			var radius = config.border.radius,
@@ -258,8 +259,8 @@ hipstermatic.filter = {
 			var width = config.border.width;
 			var color = config.border.color;
 			var radius = config.border.radius;
-			var isRounded = config.border.isRounded;
-			console.log(color);
+			//var isRounded = config.border.isRounded;
+			
 		}
 		//move selectors up
 		$("#brightness").attr("value", config.brightness || 0);
@@ -269,15 +270,13 @@ hipstermatic.filter = {
 		$("#green").attr("value", green || 0);
 		$("#blue").attr("value", blue || 0);
 		$("#border").attr("checked", config.border || false);
-		if (config.border){
-			$(".borderAdjustment #color").attr("value", color || "#00000");
+		
+
+			$(".borderAdjustment #color").attr("value", color || "#000000");
 			$(".borderAdjustment #width").attr("value", width || 0);
-			$(".borderAdjustment #isRounded").attr("value", isRounded || false);
+			
 			$(".borderAdjustment #radius").attr("value", radius || 0);
-		}
-		else {
-			//hide this
-		}
+		
 		
 		//console.log(config.brightness);
 	},
@@ -296,7 +295,7 @@ hipstermatic.filter = {
 	mergeFiltersSliderConfig: function(){
 		//grab last applied filter config
 		var activeFilter = $(".filters .active");
-		var sliderConfig = {channelAdjustment:{}, vingette: {}, brightness:{}, border:{}};
+		var sliderConfig = {channelAdjustment:{}, vingette: {}, brightness:{}};
 		//loop through filter sliders - add values to slider config
 		
 		channelAdjustmentInputs = $(".channelAdjustment input");
@@ -314,14 +313,24 @@ hipstermatic.filter = {
 				//console.log(value);
 				sliderConfig.vingette[id] = value;
 		});
-		borderAdjustmentInputs.each(function(){
-				var value = parseInt($(this).attr("value"), 10);//need to work out color seperatelt
-				var id = $(this).attr("id").toString();
-				sliderConfig.border[id] = value;
-				
-		});
-		sliderConfig.brightness = parseInt($("#brightness").attr("value"), 10);
+		if ($("#border").is(":checked")){
+			sliderConfig.border = {};
+			borderAdjustmentInputs.each(function(){
+					var $this = $(this);
+					var value = $this.attr("value");//need to work out color seperatelt
+					if ($this.attr("type") == "range"){
+						//if range make sure this is integer
+						value = parseInt($this.attr("value"), 10);
+					}
+					
+					var id = $this.attr("id").toString();
+					sliderConfig.border[id] = value;
+					
+			});
+		}
 
+		sliderConfig.brightness = parseInt($("#brightness").attr("value"), 10);
+		
 		
 		
 		//capture values if null | value = 0
@@ -334,10 +343,13 @@ hipstermatic.filter = {
 			//extend config
 			//set sliderConfig to extended config
 			filterSettings = $.extend({}, filterConfig, sliderConfig);
-			//console.log(filterSettings);
+				if (!$("#border").is(":checked"))
+				{
+					delete filterSettings.border;
+				}
 			sliderConfig = filterSettings;
 		}
-		
+	
 			return sliderConfig;
 
 		
@@ -388,18 +400,26 @@ hipstermatic.filter = {
 		});
 		$("#border").bind("change", function(){
 			canvas.trigger("revert", [true]);
-			console.log("turn on/off border");
-			if($(this).is(":checked")){
-				//turn on borders
-			}
-			else {
+			var config = hipstermatic.filter.mergeFiltersSliderConfig();
+		
+			
+			if(!$(this).is(":checked")){
 				//turn off borders
+				//remove border properties from config
+				if (config.border) {
+					delete config.border;
+				}
+				
+				//reset border sliders
+				//hipstermatic.filter.setSliders(config);
+
 			}
+			hipstermatic.filter.apply(config);
 		});
 		$(".borderAdjustment input").bind("change", function(){
 			canvas.trigger("revert", [true]);
 			var config = hipstermatic.filter.mergeFiltersSliderConfig();
-			console.log(config);
+			//console.log(config);
 			hipstermatic.filter.apply(config);
 		});
 		$(".revert").bind("click keydown", function(e){

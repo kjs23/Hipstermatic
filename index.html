@@ -78,9 +78,9 @@
 							<h4>Borders</h4>
 							<p><label for="border">Border</label><input type="checkbox" id="border" /></p>
 							<div class="borderAdjustment">
-								<p><label for="color">Colour</label><input type="color" id="color" /></p>
+								<!-- todo: trigger validation on colour field -->
+								<p><label for="color">Colour</label><input type="text" pattern="^#?(([a-fA-F0-9]){3}){1,2}$" id="color" /></p>
 								<p><label for="width">Width</label><input  type="range"  value="0" min="0" step="5" max="200" id="width" /></p>
-								<p><label for="isRounded">Rounded corners?</label><input type="checkbox" id="isRounded" /></p>
 								<p><label for="radius">Radius</label><input type="range" id="radius" value="0" min="0" step="5" max="200" /></p>
 
 							</div>	
