@@ -42,7 +42,22 @@ hipstermatic.filter = {
 			brightness: 50
 		}
 	},
-
+	selectors: {
+		brightnessInput: $("#brightness"),
+		shadowStrengthInput: $("#shadowStrength"),
+		highlightStrengthInput: $("#highlightStrength"),
+		redChannelAdjustmentInput: $("#red"),
+		blueChannelAdjustmentInput: $("#blue"),
+		greenChannelAdjustmentInput: $("#green"),
+		channelAdjustmentInputs: $(".channelAdjustment input"),
+		borderCheckBox: $("#border"),
+		borderColorInput: $(".borderAdjustment #color"),
+		borderWidthInput: $(".borderAdjustment #width"),
+		borderRadiusInput: $(".borderAdjustment #radius"),
+		vingetteAdjustmentInputs: $(".vingetteAdjustment input"),
+		borderAdjustmentInputs: $(".borderAdjustment input"),
+		revertTrigger: $(".revert")
+	},
 	apply: function(config) {
 		var canvas = document.getElementById("myCanvas"),
 			imageHolder = hipstermatic.vars.imgObject,
@@ -244,7 +259,8 @@ hipstermatic.filter = {
 		}
 	},
 	setSliders: function(config){
-		
+		var selectors = hipstermatic.filter.selectors;
+		//add selectors var here
 		if(config.vingette){
 			var shadowStrength = config.vingette.shadowStrength;
 			var highlightStrength = config.vingette.highlightStrength;
@@ -262,20 +278,16 @@ hipstermatic.filter = {
 			//var isRounded = config.border.isRounded;
 			
 		}
-		//move selectors up
-		$("#brightness").attr("value", config.brightness || 0);
-		$("#shadowStrength").attr("value", shadowStrength || 0);
-		$("#highlightStrength").attr("value", highlightStrength || 0);
-		$("#red").attr("value", red || 0);
-		$("#green").attr("value", green || 0);
-		$("#blue").attr("value", blue || 0);
-		$("#border").attr("checked", config.border || false);
-		
-
-			$(".borderAdjustment #color").attr("value", color || "#000000");
-			$(".borderAdjustment #width").attr("value", width || 0);
-			
-			$(".borderAdjustment #radius").attr("value", radius || 0);
+		selectors.brightnessInput.attr("value", config.brightness || 0);
+		selectors.shadowStrengthInput.attr("value", shadowStrength || 0);
+		selectors.highlightStrengthInput.attr("value", highlightStrength || 0);
+		selectors.redChannelAdjustmentInput.attr("value", red || 0);
+		selectors.greenChannelAdjustmentInput.attr("value", green || 0);
+		selectors.blueChannelAdjustmentInput.attr("value", blue || 0);
+		selectors.borderCheckBox.attr("checked", config.border || false);
+		selectors.borderColorInput.attr("value", color || "#000000");
+		selectors.borderWidthInput.attr("value", width || 0);
+		selectors.borderRadiusInput.attr("value", radius || 0);
 		
 		
 		//console.log(config.brightness);
@@ -298,9 +310,9 @@ hipstermatic.filter = {
 		var sliderConfig = {channelAdjustment:{}, vingette: {}, brightness:{}};
 		//loop through filter sliders - add values to slider config
 		
-		channelAdjustmentInputs = $(".channelAdjustment input");
-		vingetteAdjustmentInputs = $(".vingetteAdjustment input");
-		borderAdjustmentInputs = $(".borderAdjustment input");
+		channelAdjustmentInputs = hipstermatic.filter.selectors.channelAdjustmentInputs;
+		vingetteAdjustmentInputs = hipstermatic.filter.selectors.vingetteAdjustmentInputs;
+		borderAdjustmentInputs = hipstermatic.filter.selectors.borderAdjustmentInputs;
 		channelAdjustmentInputs.each(function(){ //maybe change these to fieldsets
 				var value = parseInt($(this).attr("value"), 10);
 				var id = $(this).attr("id").toString();
@@ -313,7 +325,7 @@ hipstermatic.filter = {
 				//console.log(value);
 				sliderConfig.vingette[id] = value;
 		});
-		if ($("#border").is(":checked")){
+		if (hipstermatic.filter.selectors.borderCheckBox.is(":checked")){
 			sliderConfig.border = {};
 			borderAdjustmentInputs.each(function(){
 					var $this = $(this);
@@ -329,7 +341,7 @@ hipstermatic.filter = {
 			});
 		}
 
-		sliderConfig.brightness = parseInt($("#brightness").attr("value"), 10);
+		sliderConfig.brightness = parseInt(hipstermatic.filter.selectors.brightnessInput.attr("value"), 10);
 		
 		
 		
@@ -343,7 +355,7 @@ hipstermatic.filter = {
 			//extend config
 			//set sliderConfig to extended config
 			filterSettings = $.extend({}, filterConfig, sliderConfig);
-				if (!$("#border").is(":checked"))
+				if (!hipstermatic.filter.selectors.borderCheckBox.is(":checked"))
 				{
 					delete filterSettings.border;
 				}
@@ -358,8 +370,8 @@ hipstermatic.filter = {
 	bindEvents:function(){
 		var canvas = $(hipstermatic.vars.canvasSelector),
 		filterLinks = $(hipstermatic.vars.filterSelector).find("a"),
-		vingetteAdjustmentInputs = $(".vingetteAdjustment input"),
-		channelAdjustmentInputs = $(".channelAdjustment input"),
+		vingetteAdjustmentInputs = hipstermatic.filter.selectors.vingetteAdjustmentInputs,
+		channelAdjustmentInputs = hipstermatic.filter.selectors.channelAdjustmentInputs,
 		canvasUrl;
 		filterLinks.bind("click keydown", function(e) {
 			// call function to apply the filter
@@ -382,7 +394,7 @@ hipstermatic.filter = {
 			}
 
 		});
-		$("#brightness").bind("change", function(){
+		hipstermatic.filter.selectors.brightnessInput.bind("change", function(){
 			canvas.trigger("revert", [true]);
 			var config = hipstermatic.filter.mergeFiltersSliderConfig();
 			hipstermatic.filter.apply(config);
@@ -398,7 +410,7 @@ hipstermatic.filter = {
 			var config = hipstermatic.filter.mergeFiltersSliderConfig();
 			hipstermatic.filter.apply(config);
 		});
-		$("#border").bind("change", function(){
+		hipstermatic.filter.selectors.borderCheckBox.bind("change", function(){
 			canvas.trigger("revert", [true]);
 			var config = hipstermatic.filter.mergeFiltersSliderConfig();
 		
@@ -416,13 +428,13 @@ hipstermatic.filter = {
 			}
 			hipstermatic.filter.apply(config);
 		});
-		$(".borderAdjustment input").bind("change", function(){
+		hipstermatic.filter.selectors.borderAdjustmentInputs.bind("change", function(){
 			canvas.trigger("revert", [true]);
 			var config = hipstermatic.filter.mergeFiltersSliderConfig();
 			//console.log(config);
 			hipstermatic.filter.apply(config);
 		});
-		$(".revert").bind("click keydown", function(e){
+		hipstermatic.filter.selectors.revertTrigger.bind("click keydown", function(e){
 			if (!e.keyCode || e.keyCode === "13"){
 				canvas.trigger("revert");
 				return false;
