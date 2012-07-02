@@ -102,6 +102,8 @@
 			<p><a class="save" href="#">Store my image!</a></p>
 			<h2>Save your image</h2>
 			<p><a id ="saveToDisk" href="#">Save my image now!</a></p>
+			<!-- <h2>Tweet Your Image</h2>
+			<p><a id ="convertjpegbtn" href="#">Tweet this!</a></p> -->
 		</section>
 	</div>
 
@@ -112,27 +114,5 @@
 	<script src="js/base64.js"></script>
 	<script src="js/canvas2image.js"></script>
 	<script src="js/hipstermatic.js"></script>
-	<script>
-	window.onload = function() {
-  
-		var oCanvas = document.getElementById("myCanvas");
-		function saveCanvas(pCanvas, strType) {
-			var bRes = false;
-		   
-			if (strType == "JPEG")
-			  bRes = Canvas2Image.saveAsJPEG(oCanvas);
-
-			if (!bRes) {
-			  alert("Sorry, this browser is not capable of saving " + strType + " files!");
-			  return false;
-			}
-  		}
-
-		document.getElementById("saveToDisk").onclick = function() {
-			saveCanvas(oCanvas, "JPEG");
-		}
-	}
-	</script>
-
 </body>
 </html> 
