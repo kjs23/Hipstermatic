@@ -57,6 +57,8 @@
 * General
 **/
 body {
+	background: url(../img/bg.png) 0 0 repeat;
+	color: #efefef;
 	font: 14px/1em helvetica, arial, sans-serif;
 }
 h1 {
@@ -77,7 +79,7 @@ p {
 	margin-bottom: 10px;
 }
 a {
-	color: #666;
+	color: #ccc;
 	text-decoration: none;
 }
 h2 a {
@@ -87,7 +89,7 @@ a:hover,
 a:focus,
 a:active,
 .active {
-	color: #000;
+	color: #fff;
 }
 
 .visuallHidden {
@@ -115,8 +117,9 @@ a:active,
 	right: -1px;
 	padding: 20px 20px 0;
 	width: 250px;
-	background: #fff;
-	border: 1px solid #ccc;
+	background: #34344E;
+	border: 1px solid #000;
+	box-shadow: -5px 0 10px rgba(0, 0, 0, 0.25);
 }
 
 /**
@@ -131,7 +134,7 @@ a:active,
 }
 #header h2 {
 	margin-left: 50px;
-	color: #999;
+	color: #ddd;
 }
 nav ul {
 	float: right;
@@ -149,6 +152,7 @@ canvas {
 	position: relative;
 	left: 50%;
 	margin: 0 0 30px -400px;
+	background: #fff;
 	border: 1px solid #ccc;
 	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }
@@ -180,11 +184,12 @@ canvas {
 	top: 100px;
 	left: 0;
 	padding: 10px;
-	background: #fff;
-	border: 1px solid #ccc;
-	border-right-color: #fff;
+	background: #34344E;
+	border: 1px solid #000;
+	border-right-color: #34344E;
 	border-radius: 10px 0 0 10px;
-	color: #333;
+	box-shadow: -6px 0 10px rgba(0, 0, 0, 0.25);
+	color: #efefef;
 	font: normal 25px/1em LobsterTwoItalic;
 }
 
@@ -211,6 +216,9 @@ canvas {
 	max-height: 115px;
 }
 
+/**
+* Overlay
+**/
 #overlay,
 #overlayContent {
 	display: none;
