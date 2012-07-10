@@ -6,6 +6,27 @@
 
 	<link href="css/reset.css" rel="stylesheet">
 	<link href="css/hipstermatic.css" rel="stylesheet">
+	<script src="js/modernizr.custom.61006.js"></script>
+  	<script>   
+		// Set up the yepnope (Modernizr.load) directives... 
+		Modernizr.load([
+		{
+		    test: Modernizr.inputtypes.range,
+		   nope: [     
+	        // Temp slider CSS location
+	        'http://www.wbuhosting.com/lbi/hack/css/slider.css'       
+	        // Temp slider JS location
+	        ,'http://www.wbuhosting.com/lbi/hack/js/slider.js'     
+	    ],
+		    callback: function(id, testResult) {
+		        // If the slider file has loaded then fire the onDomReady event        
+		        if("fdSlider" in window && typeof (fdSlider.onDomReady) != "undefined") {
+		            try { fdSlider.onDomReady(); } catch(err) {};
+		        };
+		    }
+		}
+		]);
+	</script>
 
 	<!--[if lt IE 9]>
 		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -89,15 +110,18 @@
 				</div>
 			</div>
 
-			<h2>Save your image</h2>
+			<h2>Store your image</h2>
 			<form action="#" method="post">
 				<fieldset>
 					<label for="imageTitle">Title:</label>
 					<input id="imageTitle" name="imageTitle" type="text" />
 				</fieldset>
 			</form>
-
-			<p><a class="save" href="#">Save my image!</a></p>
+			<p><a class="save" href="#">Store my image!</a></p>
+			<h2>Save your image</h2>
+			<p><a id ="saveToDisk" href="#">Save my image now!</a></p>
+			<!-- <h2>Tweet Your Image</h2>
+			<p><a id ="convertjpegbtn" href="#">Tweet this!</a></p> -->
 		</section>
 	</div>
 
@@ -105,6 +129,8 @@
 	<script src="js/json2.js"></script>
 	<script src="js/filters.js"></script>
 	<script src="js/storage.js"></script>
+	<script src="js/base64.js"></script>
+	<script src="js/canvas2image.js"></script>
 	<script src="js/hipstermatic.js"></script>
 </body>
 </html> 
