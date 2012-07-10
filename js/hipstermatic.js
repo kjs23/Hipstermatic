@@ -92,7 +92,7 @@ hipstermatic.initSidebar = function() {
 	$sidebar.css({
 		//marginTop: -($sidebar.height() / 2),
 		visibility: 'visible',
-		height: $(window).height() - 20
+		height: $(window).height() - 40
 	}).animate({
 		right: -292
 	}, 0);

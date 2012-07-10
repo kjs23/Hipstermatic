@@ -64,64 +64,68 @@
 		<section id="sidebar">
 			<a class="togglePanel" href="#">Image<br /> Options</a>
 
-			<h2>Filters</h2>
-			<div class="filters">
-				<p><a href="#" class="revert">Revert to original</a></p>
+			<div class="sidebarInner">
+				<h2>Filters</h2>
+				<div class="filters">
+					<p><a href="#" class="revert">Revert to original</a></p>
 
-				<ul>
-					<li><a href="#" data-filter="greyscale">GreyScale</a></li>
-					<li><a href="#" data-filter="hudson">Hudson</a></li>
-					<li><a href="#" data-filter="inkwell">Inkwell</a></li>
-					<li><a href="#" data-filter="brightness">Brightness/Contrast</a></li>
-					<li><a href="#" data-filter="sepia">Sepia</a></li>
-				</ul>
-
-				<div>
-					<h3>Create your own</h3>
-					<p>Play with the sliders below and make your own filter.</p>
-					<ul class="controls">
-						<li class="vingetteAdjustment">
-							<h4>Vingette adjustment</h4>
-							<p><label for="shadowStrength">Shadow Strength</label><input type="range" value="0" id="shadowStrength" min="0" step="0.1" max="1" /><p>
-							<p><label for="highlightStrength">Highlight Strength</label><input type="range" value="0" id="highlightStrength" min="0" step="0.1" max="1" /><p>
-						</li>
-						<li class="channelAdjustment">
-							<h4>Channel adjustment</h4>
-							<p><label for="red">Red</label><input type="range" value="0" id="red" min="-225" step="1" max="255" /><p>
-							<p><label for="blue">Blue</label><input type="range" value="0" id="blue" min="-225" step="1" max="255" /><p>
-							<p><label for="green">Green</label><input type="range" value="0" id="green" min="-225" step="1" max="255" /><p>
-						</lI>
-						<li>
-							<h4>Extras</h4>
-							<label for="brightness">Brightness</label><input type="range" value="0" id="brightness" min="-255" step="1" max="255" />
-						</li>
-						<li>
-							<h4>Borders</h4>
-							<p><label for="border">Border</label><input type="checkbox" id="border" /></p>
-							<div class="borderAdjustment">
-								<!-- todo: trigger validation on colour field -->
-								<p><label for="color">Colour</label><input type="text" pattern="^#?(([a-fA-F0-9]){3}){1,2}$" id="color" /></p>
-								<p><label for="width">Width</label><input  type="range"  value="0" min="0" step="5" max="200" id="width" /></p>
-								<p><label for="radius">Radius</label><input type="range" id="radius" value="0" min="0" step="5" max="200" /></p>
-
-							</div>	
-						</li>	
+					<ul>
+						<li><a href="#" data-filter="greyscale">GreyScale</a></li>
+						<li><a href="#" data-filter="hudson">Hudson</a></li>
+						<li><a href="#" data-filter="inkwell">Inkwell</a></li>
+						<li><a href="#" data-filter="brightness">Brightness/Contrast</a></li>
+						<li><a href="#" data-filter="sepia">Sepia</a></li>
 					</ul>
-				</div>
-			</div>
 
-			<h2>Store your image</h2>
-			<form action="#" method="post">
-				<fieldset>
-					<label for="imageTitle">Title:</label>
-					<input id="imageTitle" name="imageTitle" type="text" />
-				</fieldset>
-			</form>
-			<p><a class="save" href="#">Store my image!</a></p>
-			<h2>Save your image</h2>
-			<p><a id ="saveToDisk" href="#">Save my image now!</a></p>
-			<!-- <h2>Tweet Your Image</h2>
-			<p><a id ="convertjpegbtn" href="#">Tweet this!</a></p> -->
+					<div>
+						<h3>Create your own</h3>
+						<p>Play with the sliders below and make your own filter.</p>
+						<ul class="controls">
+							<li class="vingetteAdjustment">
+								<h4>Vingette adjustment</h4>
+								<p><label for="shadowStrength">Shadow Strength</label><input type="range" value="0" id="shadowStrength" min="0" step="0.1" max="1" /><p>
+								<p><label for="highlightStrength">Highlight Strength</label><input type="range" value="0" id="highlightStrength" min="0" step="0.1" max="1" /><p>
+							</li>
+							<li class="channelAdjustment">
+								<h4>Channel adjustment</h4>
+								<p><label for="red">Red</label><input type="range" value="0" id="red" min="-225" step="1" max="255" /><p>
+								<p><label for="blue">Blue</label><input type="range" value="0" id="blue" min="-225" step="1" max="255" /><p>
+								<p><label for="green">Green</label><input type="range" value="0" id="green" min="-225" step="1" max="255" /><p>
+							</lI>
+							<li>
+								<h4>Extras</h4>
+								<label for="brightness">Brightness</label><input type="range" value="0" id="brightness" min="-255" step="1" max="255" />
+							</li>
+							<li>
+								<h4>Borders</h4>
+								<p><label for="border">Border</label><input type="checkbox" id="border" /></p>
+								<div class="borderAdjustment">
+									<!-- todo: trigger validation on colour field -->
+									<p><label for="color">Colour</label><input type="text" pattern="^#?(([a-fA-F0-9]){3}){1,2}$" id="color" /></p>
+									<p><label for="width">Width</label><input  type="range"  value="0" min="0" step="5" max="200" id="width" /></p>
+									<p><label for="radius">Radius</label><input type="range" id="radius" value="0" min="0" step="5" max="200" /></p>
+
+								</div>	
+							</li>	
+						</ul>
+					</div>
+				</div>
+
+				<h2>Store your image</h2>
+				<form action="#" method="post">
+					<fieldset>
+						<label for="imageTitle">Title:</label>
+						<input id="imageTitle" name="imageTitle" type="text" />
+					</fieldset>
+				</form>
+				<p>
+					<a class="save" href="#">Save online</a>
+					or
+					<a id="saveToDisk" href="#">Download</a>
+				</p>
+				<!-- <h2>Tweet Your Image</h2>
+				<p><a id ="convertjpegbtn" href="#">Tweet this!</a></p> -->
+			</div>
 		</section>
 	</div>
 
