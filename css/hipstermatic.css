@@ -19,7 +19,6 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
 @font-face {
 	font-family: 'LobsterTwoItalic';
 		src: url('../fonts/LobsterTwo-Italic-webfont.eot');
@@ -30,7 +29,6 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
 @font-face {
 	font-family: 'LobsterTwoBold';
 		src: url('../fonts/LobsterTwo-Bold-webfont.eot');
@@ -41,7 +39,6 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
 @font-face {
 	font-family: 'LobsterTwoBoldItalic';
 		src: url('../fonts/LobsterTwo-BoldItalic-webfont.eot');
@@ -108,8 +105,6 @@ a:active,
 	overflow: hidden;
 }
 
-#content {}
-
 #sidebar {
 	visibility: hidden;
 	position: fixed;
@@ -117,7 +112,7 @@ a:active,
 	right: -1px;
 	padding: 20px 0;
 	width: 290px;
-	background: #34344E;
+	background: #270A33;
 	border: 1px solid #000;
 	box-shadow: -5px 0 10px rgba(0, 0, 0, 0.25);
 }
@@ -169,11 +164,10 @@ canvas {
 	margin-bottom: 5px;
 	list-style: none;
 }
+
 .controls li {
 	margin-bottom: 15px;
 }
-.filters li a {}
-
 .controls p {
 	margin-bottom: 0;
 }
@@ -186,9 +180,9 @@ canvas {
 	top: 100px;
 	left: 0;
 	padding: 10px;
-	background: #34344E;
+	background: #270A33;
 	border: 1px solid #000;
-	border-right-color: #34344E;
+	border-right-color: #270A33;
 	border-radius: 10px 0 0 10px;
 	box-shadow: -6px 0 10px rgba(0, 0, 0, 0.25);
 	color: #efefef;
