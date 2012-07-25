@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Hipstergram - My images</title>
+
+	<link href="../css/reset.css" rel="stylesheet">
+	<link href="../css/hipstermatic.css" rel="stylesheet">
+
+	<!--[if lt IE 9]>
+		<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+	<div id="pageWrapper">
+		<header id="header">
+			<hgroup>
+				<h1>Hipstergram</h1>
+				<h2>Fancy photo filter stuff for you folks that are too trendy</h2>
+			</hgroup>
+
+			<nav>
+				<ul>
+					<li><a href="/Hipstermatic/">Hipster-ise images</a></li>
+					<li><a href="/Hipstermatic/myimages/">My Hipstered images</a></li>
+				</ul>
+			</nav>
+		</header>
+
+		<section id="content">
+			<h2>My images</h2>
+
+			<ul id="savedImages">
+				<li>loading...</li>
+			</ul>
+		</section>
+	</div>
+
+	<div id="overlay"></div>
+	<div id="overlayContent"></div>
+
+	<script src="../js/jquery-1.7.1.min.js"></script>
+	<script src="../js/json2.js"></script>
+	<script src="../js/storage.js"></script>
+	<script src="../js/hipstermatic.js"></script>
+</body>
+</html> 

@@ -1,3 +1,241 @@
+/**
+* Hipstermatic - Arty <canvas> photos filters
+*
+* @version	0.1
+* @author	Kevin Stevens, Clare Hyam, Chloe Watts, Jasal Vadgama
+* @license	GPL v3
+**/
+
+/**
+* Fonts
+**/
+@font-face {
+	font-family: 'LobsterTwoRegular';
+		src: url('../fonts/LobsterTwo-Regular-webfont.eot');
+		src: url('../fonts/LobsterTwo-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/LobsterTwo-Regular-webfont.woff') format('woff'),
+		url('../fonts/LobsterTwo-Regular-webfont.ttf') format('truetype'),
+		url('../fonts/LobsterTwo-Regular-webfont.svg#LobsterTwoRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'LobsterTwoItalic';
+		src: url('../fonts/LobsterTwo-Italic-webfont.eot');
+		src: url('../fonts/LobsterTwo-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/LobsterTwo-Italic-webfont.woff') format('woff'),
+		url('../fonts/LobsterTwo-Italic-webfont.ttf') format('truetype'),
+		url('../fonts/LobsterTwo-Italic-webfont.svg#LobsterTwoItalic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'LobsterTwoBold';
+		src: url('../fonts/LobsterTwo-Bold-webfont.eot');
+		src: url('../fonts/LobsterTwo-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/LobsterTwo-Bold-webfont.woff') format('woff'),
+		url('../fonts/LobsterTwo-Bold-webfont.ttf') format('truetype'),
+		url('../fonts/LobsterTwo-Bold-webfont.svg#LobsterTwoBold') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'LobsterTwoBoldItalic';
+		src: url('../fonts/LobsterTwo-BoldItalic-webfont.eot');
+		src: url('../fonts/LobsterTwo-BoldItalic-webfont.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/LobsterTwo-BoldItalic-webfont.woff') format('woff'),
+		url('../fonts/LobsterTwo-BoldItalic-webfont.ttf') format('truetype'),
+		url('../fonts/LobsterTwo-BoldItalic-webfont.svg#LobsterTwoBoldItalic') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/**
+* General
+**/
+body {
+	background: url(../img/bg.png) 0 0 repeat;
+	color: #efefef;
+	font: 14px/1em helvetica, arial, sans-serif;
+}
+h1 {
+	font: normal 40px/1em LobsterTwoRegular;
+}
+h2 {
+	margin-bottom: 10px;
+	font: normal 25px/1em LobsterTwoItalic;
+}
+h3 {
+	margin-bottom: 10px;
+	font-size: 16px;
+}
+h4 {
+	margin-bottom: 5px;
+}
+p {
+	margin-bottom: 10px;
+}
+a {
+	color: #ccc;
+	text-decoration: none;
+}
+h2 a {
+	color: #333;
+}
+a:hover,
+a:focus,
+a:active,
+.active {
+	color: #fff;
+}
+
+.visuallHidden {
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+/**
+* Grid and Containers
+**/
+#pageWrapper {
+	position: relative;
+	padding: 10px;
+	min-width: 960px;
+	overflow: hidden;
+}
+
+#sidebar {
+	visibility: hidden;
+	position: fixed;
+	top: -1px;
+	right: -1px;
+	padding: 20px 0;
+	width: 290px;
+	background: #270A33;
+	border: 1px solid #000;
+	box-shadow: -5px 0 10px rgba(0, 0, 0, 0.25);
+}
+
+/**
+* Header
+**/
+#header {
+	margin-bottom: 40px;
+	overflow: hidden;
+}
+#header hgroup {
+	float: left;
+}
+#header h2 {
+	margin-left: 50px;
+	color: #ddd;
+}
+nav ul {
+	float: right;
+	margin: 50px 10px 0 0;
+}
+nav ul li {
+	float: left;
+	margin-left: 20px;
+}
+
+/**
+* Content
+**/
 canvas {
-	border: 1px solid red;
+	position: relative;
+	left: 50%;
+	margin: 0 0 30px -400px;
+	background: #fff url(../img/griffin.jpg) 50% 50% no-repeat;
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.newImage {
+	display: none;
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.filters ul {
+	margin-bottom: 20px;
+}
+.filters li {
+	margin-bottom: 5px;
+	list-style: none;
+}
+
+.controls li {
+	margin-bottom: 15px;
+}
+.controls p {
+	margin-bottom: 0;
+}
+
+/**
+* Sidebar
+**/
+.togglePanel {
+	position: absolute;
+	top: 100px;
+	left: 0;
+	padding: 10px;
+	background: #270A33;
+	border: 1px solid #000;
+	border-right-color: #270A33;
+	border-radius: 10px 0 0 10px;
+	box-shadow: -6px 0 10px rgba(0, 0, 0, 0.25);
+	color: #efefef;
+	font: normal 25px/1em LobsterTwoItalic;
+}
+.sidebarInner {
+	padding: 0 20px;
+	height: 100%;
+	overflow: auto;
+}
+
+/**
+* Form
+**/
+.fileUpload {
+	display: none;
+}
+
+/**
+* Saved images
+**/
+#savedImages {
+	margin-top: 20px;
+}
+#savedImages li {
+	float: left;
+	margin-right: 20px;
+	list-style: none;
+	cursor: pointer;
+}
+#savedImages img {
+	display: block;
+	margin-bottom: 5px;
+	max-width: 200px;
+	max-height: 115px;
+}
+
+/**
+* Overlay
+**/
+#overlay,
+#overlayContent {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.5);
+}
+#overlay {
+	cursor: pointer;
+}
+#overlayContent {
+	background: none;
+	top: 50%;
+	left: 50%;
 }
